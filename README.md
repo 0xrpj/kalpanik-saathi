@@ -1,6 +1,7 @@
-# Kalpanik Saathi (AI mate)
+# Kalpanik Saathi (Virtual companion)
 
-Kalpanik Saathi is a virtual AI friend who will guide you towards positivity and good mental health.
+Screenshots:
+Updating soon.
 
 Features:
 Updating soon.
