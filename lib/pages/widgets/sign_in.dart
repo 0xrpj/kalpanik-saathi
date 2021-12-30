@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:kalpaniksaathi/services/auth.dart';
 import 'package:kalpaniksaathi/theme.dart';
 import 'package:kalpaniksaathi/widgets/snackbar.dart';
 
@@ -13,6 +14,8 @@ class SignIn extends StatefulWidget {
 class _SignInState extends State<SignIn> {
   TextEditingController loginEmailController = TextEditingController();
   TextEditingController loginPasswordController = TextEditingController();
+
+  final AuthService auth = AuthService();
 
   final FocusNode focusNodeEmail = FocusNode();
   final FocusNode focusNodePassword = FocusNode();
@@ -123,10 +126,15 @@ class _SignInState extends State<SignIn> {
               Container(
                   margin: const EdgeInsets.only(top: 160.0, bottom: 20.0),
                   child: ElevatedButton(
-                    onPressed: () => CustomSnackBar(
-                      context,
-                      const Text('Login button pressed'),
-                    ),
+                    onPressed: () async {
+                      final dynamic result = await auth.signInAnon();
+                      if (result == null) {
+                        CustomSnackBar(context, const Text('Can\'t sign in'));
+                      } else {
+                        print(result);
+                        CustomSnackBar(context, const Text('Signing in'));
+                      }
+                    },
                     child: const Icon(
                       FontAwesomeIcons.chevronRight,
                       size: 18.0,
