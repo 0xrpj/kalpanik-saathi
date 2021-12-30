@@ -4,6 +4,8 @@ import 'package:kalpaniksaathi/pages/login_page.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+
+  //forcing the app to run in portrait mode
   SystemChrome.setPreferredOrientations(<DeviceOrientation>[
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
@@ -17,7 +19,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'TheGorgeousLogin',
+      title: 'Kalpanik Saathi',
       home: LoginPage(),
     );
   }

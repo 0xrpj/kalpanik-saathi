@@ -60,13 +60,13 @@ class _SignInState extends State<SignIn> {
                           decoration: const InputDecoration(
                             border: InputBorder.none,
                             icon: Icon(
-                              FontAwesomeIcons.envelope,
+                              FontAwesomeIcons.envelopeOpen,
                               color: Colors.black,
                               size: 22.0,
                             ),
-                            hintText: 'Email Address',
+                            hintText: 'Email',
                             hintStyle: TextStyle(
-                                fontFamily: 'WorkSansSemiBold', fontSize: 17.0),
+                                fontFamily: 'WorkSansMedium', fontSize: 17.0),
                           ),
                           onSubmitted: (_) {
                             focusNodePassword.requestFocus();
@@ -86,19 +86,19 @@ class _SignInState extends State<SignIn> {
                           controller: loginPasswordController,
                           obscureText: _obscureTextPassword,
                           style: const TextStyle(
-                              fontFamily: 'WorkSansSemiBold',
+                              fontFamily: 'WorkSansMedium',
                               fontSize: 16.0,
                               color: Colors.black),
                           decoration: InputDecoration(
                             border: InputBorder.none,
                             icon: const Icon(
-                              FontAwesomeIcons.lock,
-                              size: 22.0,
+                              Icons.lock_outlined,
+                              size: 26.0,
                               color: Colors.black,
                             ),
                             hintText: 'Password',
                             hintStyle: const TextStyle(
-                                fontFamily: 'WorkSansSemiBold', fontSize: 17.0),
+                                fontFamily: 'WorkSansMedium', fontSize: 17.0),
                             suffixIcon: GestureDetector(
                               onTap: _toggleLogin,
                               child: Icon(
@@ -121,63 +121,25 @@ class _SignInState extends State<SignIn> {
                 ),
               ),
               Container(
-                margin: const EdgeInsets.only(top: 170.0),
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                  boxShadow: <BoxShadow>[
-                    BoxShadow(
-                      color: CustomTheme.loginGradientStart,
-                      offset: Offset(1.0, 6.0),
-                      blurRadius: 20.0,
+                  margin: const EdgeInsets.only(top: 160.0, bottom: 20.0),
+                  child: ElevatedButton(
+                    onPressed: () => CustomSnackBar(
+                      context,
+                      const Text('Login button pressed'),
                     ),
-                    BoxShadow(
-                      color: CustomTheme.loginGradientEnd,
-                      offset: Offset(1.0, 6.0),
-                      blurRadius: 20.0,
-                    ),
-                  ],
-                  gradient: LinearGradient(
-                      colors: <Color>[
-                        CustomTheme.loginGradientEnd,
-                        CustomTheme.loginGradientStart
-                      ],
-                      begin: FractionalOffset(0.2, 0.2),
-                      end: FractionalOffset(1.0, 1.0),
-                      stops: <double>[0.0, 1.0],
-                      tileMode: TileMode.clamp),
-                ),
-                child: MaterialButton(
-                  highlightColor: Colors.transparent,
-                  splashColor: CustomTheme.loginGradientEnd,
-                  child: const Padding(
-                    padding:
-                        EdgeInsets.symmetric(vertical: 10.0, horizontal: 42.0),
-                    child: Text(
-                      'LOGIN',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 25.0,
-                          fontFamily: 'WorkSansBold'),
-                    ),
-                  ),
-                  onPressed: () => CustomSnackBar(
-                      context, const Text('Login button pressed')),
-                ),
-              )
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 10.0),
-            child: TextButton(
-                onPressed: () {},
-                child: const Text(
-                  'Forgot Password?',
-                  style: TextStyle(
-                      decoration: TextDecoration.underline,
+                    child: const Icon(
+                      FontAwesomeIcons.chevronRight,
+                      size: 18.0,
                       color: Colors.white,
-                      fontSize: 16.0,
-                      fontFamily: 'WorkSansMedium'),
-                )),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                        primary: CustomTheme.loginGradientEnd,
+                        //add white border
+                        side: const BorderSide(color: Colors.white),
+                        shape: const CircleBorder(),
+                        padding: const EdgeInsets.all(24)),
+                  ))
+            ],
           ),
           Padding(
             padding: const EdgeInsets.only(top: 10.0),
@@ -196,13 +158,13 @@ class _SignInState extends State<SignIn> {
                         stops: <double>[0.0, 1.0],
                         tileMode: TileMode.clamp),
                   ),
-                  width: 100.0,
+                  width: 90.0,
                   height: 1.0,
                 ),
                 const Padding(
-                  padding: EdgeInsets.only(left: 15.0, right: 15.0),
+                  padding: EdgeInsets.only(left: 5.0, right: 5.0),
                   child: Text(
-                    'Or',
+                    'I\'ll always listen to you.',
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 16.0,
@@ -221,53 +183,53 @@ class _SignInState extends State<SignIn> {
                         stops: <double>[0.0, 1.0],
                         tileMode: TileMode.clamp),
                   ),
-                  width: 100.0,
+                  width: 90.0,
                   height: 1.0,
                 ),
               ],
             ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(top: 10.0, right: 40.0),
-                child: GestureDetector(
-                  onTap: () => CustomSnackBar(
-                      context, const Text('Facebook button pressed')),
-                  child: Container(
-                    padding: const EdgeInsets.all(15.0),
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.white,
-                    ),
-                    child: const Icon(
-                      FontAwesomeIcons.facebookF,
-                      color: Color(0xFF0084ff),
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 10.0),
-                child: GestureDetector(
-                  onTap: () => CustomSnackBar(
-                      context, const Text('Google button pressed')),
-                  child: Container(
-                    padding: const EdgeInsets.all(15.0),
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.white,
-                    ),
-                    child: const Icon(
-                      FontAwesomeIcons.google,
-                      color: Color(0xFF0084ff),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.center,
+          //   children: <Widget>[
+          //     Padding(
+          //       padding: const EdgeInsets.only(top: 10.0, right: 40.0),
+          //       child: GestureDetector(
+          //         onTap: () => CustomSnackBar(
+          //             context, const Text('Facebook button pressed')),
+          //         child: Container(
+          //           padding: const EdgeInsets.all(15.0),
+          //           decoration: const BoxDecoration(
+          //             shape: BoxShape.circle,
+          //             color: Colors.white,
+          //           ),
+          //           child: const Icon(
+          //             FontAwesomeIcons.facebookF,
+          //             color: Color(0xFF0084ff),
+          //           ),
+          //         ),
+          //       ),
+          //     ),
+          //     Padding(
+          //       padding: const EdgeInsets.only(top: 10.0),
+          //       child: GestureDetector(
+          //         onTap: () => CustomSnackBar(
+          //             context, const Text('Google button pressed')),
+          //         child: Container(
+          //           padding: const EdgeInsets.all(15.0),
+          //           decoration: const BoxDecoration(
+          //             shape: BoxShape.circle,
+          //             color: Colors.white,
+          //           ),
+          //           child: const Icon(
+          //             FontAwesomeIcons.google,
+          //             color: Color(0xFF0084ff),
+          //           ),
+          //         ),
+          //       ),
+          //     ),
+          //   ],
+          // ),
         ],
       ),
     );

@@ -64,7 +64,7 @@ class _SignUpState extends State<SignUp> {
                           textCapitalization: TextCapitalization.words,
                           autocorrect: false,
                           style: const TextStyle(
-                              fontFamily: 'WorkSansSemiBold',
+                              fontFamily: 'WorkSansMedium',
                               fontSize: 16.0,
                               color: Colors.black),
                           decoration: const InputDecoration(
@@ -75,7 +75,7 @@ class _SignUpState extends State<SignUp> {
                             ),
                             hintText: 'Name',
                             hintStyle: TextStyle(
-                                fontFamily: 'WorkSansSemiBold', fontSize: 16.0),
+                                fontFamily: 'WorkSansMedium', fontSize: 16.0),
                           ),
                           onSubmitted: (_) {
                             focusNodeEmail.requestFocus();
@@ -96,18 +96,18 @@ class _SignUpState extends State<SignUp> {
                           keyboardType: TextInputType.emailAddress,
                           autocorrect: false,
                           style: const TextStyle(
-                              fontFamily: 'WorkSansSemiBold',
+                              fontFamily: 'WorkSansMedium',
                               fontSize: 16.0,
                               color: Colors.black),
                           decoration: const InputDecoration(
                             border: InputBorder.none,
                             icon: Icon(
-                              FontAwesomeIcons.envelope,
+                              FontAwesomeIcons.envelopeOpen,
                               color: Colors.black,
                             ),
-                            hintText: 'Email Address',
+                            hintText: 'Email',
                             hintStyle: TextStyle(
-                                fontFamily: 'WorkSansSemiBold', fontSize: 16.0),
+                                fontFamily: 'WorkSansMedium', fontSize: 16.0),
                           ),
                           onSubmitted: (_) {
                             focusNodePassword.requestFocus();
@@ -128,18 +128,19 @@ class _SignUpState extends State<SignUp> {
                           obscureText: _obscureTextPassword,
                           autocorrect: false,
                           style: const TextStyle(
-                              fontFamily: 'WorkSansSemiBold',
+                              fontFamily: 'WorkSansMedium',
                               fontSize: 16.0,
                               color: Colors.black),
                           decoration: InputDecoration(
                             border: InputBorder.none,
                             icon: const Icon(
-                              FontAwesomeIcons.lock,
+                              Icons.lock_outlined,
+                              size: 26.0,
                               color: Colors.black,
                             ),
                             hintText: 'Password',
                             hintStyle: const TextStyle(
-                                fontFamily: 'WorkSansSemiBold', fontSize: 16.0),
+                                fontFamily: 'WorkSansMedium', fontSize: 16.0),
                             suffixIcon: GestureDetector(
                               onTap: _toggleSignup,
                               child: Icon(
@@ -170,18 +171,19 @@ class _SignUpState extends State<SignUp> {
                           obscureText: _obscureTextConfirmPassword,
                           autocorrect: false,
                           style: const TextStyle(
-                              fontFamily: 'WorkSansSemiBold',
+                              fontFamily: 'WorkSansMedium',
                               fontSize: 16.0,
                               color: Colors.black),
                           decoration: InputDecoration(
                             border: InputBorder.none,
                             icon: const Icon(
-                              FontAwesomeIcons.lock,
+                              Icons.lock_outlined,
+                              size: 26.0,
                               color: Colors.black,
                             ),
                             hintText: 'Confirmation',
                             hintStyle: const TextStyle(
-                                fontFamily: 'WorkSansSemiBold', fontSize: 16.0),
+                                fontFamily: 'WorkSansMedium', fontSize: 16.0),
                             suffixIcon: GestureDetector(
                               onTap: _toggleSignupConfirm,
                               child: Icon(
@@ -204,49 +206,62 @@ class _SignUpState extends State<SignUp> {
                 ),
               ),
               Container(
-                margin: const EdgeInsets.only(top: 340.0),
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                  boxShadow: <BoxShadow>[
-                    BoxShadow(
-                      color: CustomTheme.loginGradientStart,
-                      offset: Offset(1.0, 6.0),
-                      blurRadius: 20.0,
+                  margin: const EdgeInsets.only(top: 340.0),
+                  // decoration: const BoxDecoration(
+                  //   borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                  //   boxShadow: <BoxShadow>[
+                  //     BoxShadow(
+                  //       color: CustomTheme.loginGradientStart,
+                  //       offset: Offset(1.0, 6.0),
+                  //       blurRadius: 20.0,
+                  //     ),
+                  //     BoxShadow(
+                  //       color: CustomTheme.loginGradientEnd,
+                  //       offset: Offset(1.0, 6.0),
+                  //       blurRadius: 20.0,
+                  //     ),
+                  //   ],
+                  //   gradient: LinearGradient(
+                  //       colors: <Color>[
+                  //         CustomTheme.loginGradientEnd,
+                  //         CustomTheme.loginGradientStart
+                  //       ],
+                  //       begin: FractionalOffset(0.2, 0.2),
+                  //       end: FractionalOffset(1.0, 1.0),
+                  //       stops: <double>[0.0, 1.0],
+                  //       tileMode: TileMode.clamp),
+                  // ),
+                  // child: MaterialButton(
+                  //   highlightColor: Colors.transparent,
+                  //   splashColor: CustomTheme.loginGradientEnd,
+                  //   //shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5.0))),
+                  //   child: const Padding(
+                  //     padding:
+                  //         EdgeInsets.symmetric(vertical: 10.0, horizontal: 42.0),
+                  //     child: Text(
+                  //       'SIGN UP',
+                  //       style: TextStyle(
+                  //           color: Colors.white,
+                  //           fontSize: 25.0,
+                  //           fontFamily: 'WorkSansBold'),
+                  //     ),
+                  //   ),
+                  //   onPressed: () => _toggleSignUpButton(),
+                  // ),
+                  child: ElevatedButton(
+                    onPressed: () => _toggleSignUpButton(),
+                    child: const Icon(
+                      FontAwesomeIcons.chevronRight,
+                      size: 18.0,
+                      color: Colors.white,
                     ),
-                    BoxShadow(
-                      color: CustomTheme.loginGradientEnd,
-                      offset: Offset(1.0, 6.0),
-                      blurRadius: 20.0,
-                    ),
-                  ],
-                  gradient: LinearGradient(
-                      colors: <Color>[
-                        CustomTheme.loginGradientEnd,
-                        CustomTheme.loginGradientStart
-                      ],
-                      begin: FractionalOffset(0.2, 0.2),
-                      end: FractionalOffset(1.0, 1.0),
-                      stops: <double>[0.0, 1.0],
-                      tileMode: TileMode.clamp),
-                ),
-                child: MaterialButton(
-                  highlightColor: Colors.transparent,
-                  splashColor: CustomTheme.loginGradientEnd,
-                  //shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5.0))),
-                  child: const Padding(
-                    padding:
-                        EdgeInsets.symmetric(vertical: 10.0, horizontal: 42.0),
-                    child: Text(
-                      'SIGN UP',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 25.0,
-                          fontFamily: 'WorkSansBold'),
-                    ),
-                  ),
-                  onPressed: () => _toggleSignUpButton(),
-                ),
-              )
+                    style: ElevatedButton.styleFrom(
+                        primary: CustomTheme.loginGradientEnd,
+                        //add white border
+                        side: const BorderSide(color: Colors.white),
+                        shape: const CircleBorder(),
+                        padding: const EdgeInsets.all(24)),
+                  ))
             ],
           ),
         ],
