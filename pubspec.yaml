@@ -7,15 +7,18 @@ environment:
   sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
+  cloud_firestore: ^3.1.5
+  cupertino_icons: ^1.0.2
+  firebase_auth: ^3.3.4
   flutter:
     sdk: flutter
   font_awesome_flutter:
-  cupertino_icons: ^1.0.2
+  
 
 dev_dependencies:
+  flutter_lints: ^1.0.0
   flutter_test:
     sdk: flutter
-  flutter_lints: ^1.0.0
 
 flutter:
   uses-material-design: true
@@ -35,3 +38,19 @@ flutter:
     - family: WorkSansMedium
       fonts:
         - asset: assets/fonts/Work_Sans/WorkSans-Medium.ttf
+    
+    - family: WorkSansLight
+      fonts:
+        - asset: assets/fonts/Work_Sans/WorkSans-Light.ttf
+    
+    - family: PoppinsLight
+      fonts:
+        - asset: assets/fonts/Poppins/Poppins-Light.ttf
+
+    - family: PoppinsMedium
+      fonts:
+        - asset: assets/fonts/Poppins/Poppins-Medium.ttf
+
+    - family: PoppinsBold
+      fonts:
+        - asset: assets/fonts/Poppins/Poppins-SemiBold.ttf
