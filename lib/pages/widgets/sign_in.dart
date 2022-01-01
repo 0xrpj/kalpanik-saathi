@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:kalpaniksaathi/services/auth.dart';
 import 'package:kalpaniksaathi/theme.dart';
 import 'package:kalpaniksaathi/widgets/snackbar.dart';
 
@@ -13,6 +14,8 @@ class SignIn extends StatefulWidget {
 class _SignInState extends State<SignIn> {
   TextEditingController loginEmailController = TextEditingController();
   TextEditingController loginPasswordController = TextEditingController();
+
+  final AuthService auth = AuthService();
 
   final FocusNode focusNodeEmail = FocusNode();
   final FocusNode focusNodePassword = FocusNode();
@@ -123,10 +126,7 @@ class _SignInState extends State<SignIn> {
               Container(
                   margin: const EdgeInsets.only(top: 160.0, bottom: 20.0),
                   child: ElevatedButton(
-                    onPressed: () => CustomSnackBar(
-                      context,
-                      const Text('Login button pressed'),
-                    ),
+                    onPressed: () => _toggleSignInButton(),
                     child: const Icon(
                       FontAwesomeIcons.chevronRight,
                       size: 18.0,
@@ -235,8 +235,36 @@ class _SignInState extends State<SignIn> {
     );
   }
 
-  void _toggleSignInButton() {
-    CustomSnackBar(context, const Text('Login button pressed'));
+  void _toggleSignInButton() async {
+    // final dynamic result = await auth.signInAnon();
+    // if (result == null) {
+    //   CustomSnackBar(context, const Text('Can\'t sign in'));
+    // } else {
+    //   print(result.uid);
+    //   CustomSnackBar(context,
+    //       const Text('Hiiii! Welcome to our space! :)'));
+    // }
+    final bool emailValid = RegExp(
+            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+        .hasMatch(loginEmailController.text);
+
+    final bool passwordValid = loginPasswordController.text.length > 5;
+
+    if (emailValid) {
+      if (passwordValid) {
+        final dynamic result = await auth.signInWithEmailAndPassword(
+            loginEmailController.text, loginPasswordController.text);
+        if (result == null) {
+          CustomSnackBar(context, const Text('Email or password is incorrect'));
+        }
+      } else {
+        CustomSnackBar(
+            context, const Text('Password too short. Maybe it\'s invalid?'));
+      }
+    } else {
+      CustomSnackBar(
+          context, const Text('Oops, that doesn\'t seem to be a valid email.'));
+    }
   }
 
   void _toggleLogin() {
