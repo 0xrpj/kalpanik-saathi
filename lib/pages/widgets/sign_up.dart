@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:kalpaniksaathi/services/auth.dart';
 import 'package:kalpaniksaathi/theme.dart';
 import 'package:kalpaniksaathi/widgets/snackbar.dart';
 
@@ -15,6 +16,8 @@ class _SignUpState extends State<SignUp> {
   final FocusNode focusNodeConfirmPassword = FocusNode();
   final FocusNode focusNodeEmail = FocusNode();
   final FocusNode focusNodeName = FocusNode();
+
+  final AuthService auth = AuthService();
 
   bool _obscureTextPassword = true;
   bool _obscureTextConfirmPassword = true;
@@ -269,8 +272,47 @@ class _SignUpState extends State<SignUp> {
     );
   }
 
-  void _toggleSignUpButton() {
-    CustomSnackBar(context, const Text('SignUp button pressed'));
+  void _toggleSignUpButton() async {
+    print(signupNameController.text);
+    print(signupEmailController.text);
+    print(signupPasswordController.text);
+    print(signupConfirmPasswordController.text);
+
+    final bool emailValid = RegExp(
+            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+        .hasMatch(signupEmailController.text);
+
+    final bool nameValid = signupNameController.text.length > 1;
+
+    final bool passwordValid = signupPasswordController.text.length > 5 &&
+        signupPasswordController.text == signupConfirmPasswordController.text;
+
+    if (nameValid) {
+      if (emailValid) {
+        if (passwordValid) {
+          final dynamic result = await auth.registerWithEmailAndPassword(
+              signupEmailController.text, signupPasswordController.text);
+
+          if (result == null) {
+            CustomSnackBar(
+                context,
+                const Text(
+                    'Something stupid happened on our end. Please try again.'));
+          }
+        } else {
+          CustomSnackBar(
+              context,
+              const Text(
+                  'Are you entering the same password? \nOr is it too short? (Less than 5 characters)'));
+        }
+      } else {
+        CustomSnackBar(context,
+            const Text('Oops, that doesn\'t seem to be a valid email.'));
+      }
+    } else {
+      CustomSnackBar(context,
+          const Text('Name can be anonymous, but yours is too short.'));
+    }
   }
 
   void _toggleSignup() {
