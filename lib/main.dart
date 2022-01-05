@@ -6,6 +6,7 @@ import 'package:kalpaniksaathi/pages/wrapper.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:kalpaniksaathi/services/auth.dart';
 import 'package:provider/provider.dart';
+import 'package:kalpaniksaathi/theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,10 +28,13 @@ class MyApp extends StatelessWidget {
       catchError: (_, __) => null,
       initialData: null,
       value: AuthService().user,
-      child: const MaterialApp(
+      child: MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'Kalpanik Saathi',
-          home: Wrapper()),
+          themeMode: ThemeMode.system,
+          theme: light,
+          darkTheme: dark,
+          home: const Wrapper()),
     );
   }
 }
