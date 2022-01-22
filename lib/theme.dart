@@ -8,7 +8,8 @@ ThemeData light = ThemeData(
     // primarySwatch: Colors.blue,
     primaryColor: Colors.black,
     // accentColor: Colors.blue[600],
-    scaffoldBackgroundColor: Colors.white,
+    // scaffoldBackgroundColor: Colors.white,
+    scaffoldBackgroundColor: const Color(0xFFF8F8F8),
     colorScheme: const ColorScheme.light(),
     textTheme: const TextTheme(
       bodyText1: TextStyle(color: Colors.black),
