@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:ui';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -7,10 +8,11 @@ import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:intl/date_symbol_data_local.dart';
+// import 'package:intl/date_symbol_data_local.dart';
 import 'package:mime/mime.dart';
 import 'package:open_file/open_file.dart';
 import 'package:uuid/uuid.dart';
+import 'package:http/http.dart' as http;
 
 class ChatPage extends StatefulWidget {
   const ChatPage({Key? key}) : super(key: key);
@@ -22,6 +24,7 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> {
   List<types.Message> _messages = [];
   final _user = const types.User(id: 'ro');
+  final _userBot = const types.User(id: 'bot');
 
   @override
   void initState() {
@@ -146,26 +149,46 @@ class _ChatPageState extends State<ChatPage> {
     });
   }
 
-  void _handleSendPressed(types.PartialText message) {
+  Future<void> _handleSendPressed(types.PartialText message) async {
     final textMessage = types.TextMessage(
       author: _user,
       createdAt: DateTime.now().millisecondsSinceEpoch,
       id: const Uuid().v4(),
       text: message.text,
     );
+
     _addMessage(textMessage);
+
+    //send message to rasa here
+
+    final queryParameters = {
+      'message': message.text,
+      // 'sender': 'Roshan',
+    };
+    final String apiUri =
+        'https://levchatbot.herokuapp.com/webhooks/rest/webhook/';
+
+    // final headers = {HttpHeaders.contentTypeHeader: 'application/json'};
+    final response =
+        await http.post(Uri.parse(apiUri), body: json.encode(queryParameters));
+
+    final responseJson = json.decode(response.body)[0]['text'].toString();
+
+    final textMessage2 = types.TextMessage(
+      author: _userBot,
+      createdAt: DateTime.now().millisecondsSinceEpoch,
+      id: const Uuid().v4(),
+      text: responseJson,
+    );
+
+    _addMessage(textMessage2);
   }
 
   void _loadMessages() async {
     final response = await rootBundle.loadString('assets/messages.json');
-    print(jsonDecode(response));
     final messages = (jsonDecode(response) as List)
-        // ignore: always_specify_types
         .map((dynamic e) => types.Message.fromJson(e as Map<String, dynamic>))
         .toList();
-    print("_____________MESSAGES_____________");
-    print(messages);
-
     setState(() {
       _messages = messages;
     });
