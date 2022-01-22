@@ -4,6 +4,15 @@ import 'package:kalpaniksaathi/models/user.dart';
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
+  //firebase user getter
+  User getUser() {
+    if (_auth.currentUser != null) {
+      return _auth.currentUser!;
+    } else {
+      throw Exception('No user found');
+    }
+  }
+
   // create user obj based on firebase user
   MyUser? _userFromFirebaseUser(User user) {
     return user != null ? MyUser(uid: user.uid) : null;
