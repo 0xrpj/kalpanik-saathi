@@ -60,47 +60,82 @@ class _HomeState extends State<Home> {
             ),
           ],
         ),
-        body: tabs[_currentIndex],
-        bottomNavigationBar: Theme(
-          data: ThemeData(
-            splashColor: Colors.transparent,
-            highlightColor: Colors.transparent,
-          ),
-          child: BottomNavigationBar(
-              type: BottomNavigationBarType.fixed,
-              items: const <BottomNavigationBarItem>[
-                BottomNavigationBarItem(
-                  icon: Icon(Ionicons.heart_outline, size: 27),
-                  label: '',
-                  tooltip: '',
+        body: Stack(children: [
+          tabs[_currentIndex],
+          Positioned(
+            left: 10,
+            right: 10,
+            // bottom should be device bottom
+            bottom: MediaQuery.of(context).viewInsets.bottom + 10,
+
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(30),
+                    topLeft: Radius.circular(30)),
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.grey.shade300,
+                      spreadRadius: 0,
+                      blurRadius: 8),
+                ],
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(20),
+                  // ),
                 ),
-                BottomNavigationBarItem(
-                  icon: Icon(AntDesign.smileo),
-                  label: '',
-                  tooltip: '',
+                child: SizedBox(
+                  height: 60,
+                  child: BottomNavigationBar(
+                      // backgroundColor: Theme.of(context).primaryColor,
+                      enableFeedback: true,
+                      type: BottomNavigationBarType.fixed,
+                      items: const <BottomNavigationBarItem>[
+                        BottomNavigationBarItem(
+                          icon: Icon(Ionicons.heart_outline, size: 27),
+                          label: 'Chat',
+                          tooltip: '',
+                        ),
+                        BottomNavigationBarItem(
+                          icon: Icon(AntDesign.smileo),
+                          label: 'Home',
+                          tooltip: '',
+                        ),
+                        BottomNavigationBarItem(
+                          icon: Icon(
+                            Ionicons.at,
+                            size: 29,
+                          ),
+                          label: 'Space',
+                          tooltip: '',
+                        ),
+                      ],
+                      currentIndex: _currentIndex,
+                      selectedItemColor: Theme.of(context).primaryColor,
+                      unselectedItemColor: Colors.grey,
+                      elevation: 0.0,
+                      backgroundColor: Colors.white,
+                      // showTooltip: false,
+                      onTap: (index) {
+                        setState(() {
+                          _currentIndex = index;
+                          print(_currentIndex);
+                        });
+                        // }));
+                      }),
                 ),
-                BottomNavigationBarItem(
-                  icon: Icon(
-                    Ionicons.at,
-                    size: 29,
-                  ),
-                  label: '',
-                  tooltip: '',
-                ),
-              ],
-              currentIndex: _currentIndex,
-              selectedItemColor: Theme.of(context).primaryColor,
-              unselectedItemColor: Colors.grey,
-              elevation: 0.0,
-              backgroundColor: Colors.transparent,
-              // showTooltip: false,
-              onTap: (index) {
-                setState(() {
-                  _currentIndex = index;
-                  print(_currentIndex);
-                });
-                // }));
-              }),
-        ));
+              ),
+            ),
+          )
+        ])
+        // bottomNavigationBar: Theme(
+        //   data: ThemeData(
+        //     splashColor: Colors.transparent,
+        //     highlightColor: Colors.transparent,
+        //   ),
+        //   child:
+        // )
+        );
   }
 }
