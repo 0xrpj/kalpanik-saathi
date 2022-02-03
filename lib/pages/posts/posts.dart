@@ -8,6 +8,7 @@ import 'package:kalpaniksaathi/models/posts.dart';
 import 'package:kalpaniksaathi/repository/data_repository.dart';
 import 'package:kalpaniksaathi/services/auth.dart';
 import 'package:like_button/like_button.dart';
+import 'package:kalpaniksaathi/pages/posts/post_detail.dart';
 
 final List<Post> _postData = [];
 
@@ -127,7 +128,7 @@ class _PostsState extends State<Posts> {
                         ),
                         // Text(post.postContent.toString()),
                         Text(_postData[index].postContent.toString(),
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontFamily: 'WorkSansLight',
                               fontWeight: FontWeight.w600,
                               fontSize: 15.0,
@@ -135,34 +136,25 @@ class _PostsState extends State<Posts> {
                               // letterSpacing: 0.3,
                               // ),),/
                             )),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: <Widget>[
-                              // LikeButton(
-                              //   size: 30,
-                              //   circleColor: const CircleColor(
-                              //       start: Color(0xff90ee90),
-                              //       end: Color(0xff0099cc)),
-                              //   likeBuilder: (bool isLiked) {
-                              //     return Icon(
-                              //       // icon: Feather.heart,
-                              //       isLiked
-                              //           ? Ionicons.heart
-                              //           : Ionicons.heart_outline,
-                              //       color:
-                              //           // isLiked ? Color(0xFF88C03D) : Colors.grey[700],
-                              //           isLiked ? Colors.red : Colors.grey[700],
-                              //       size: 30,
-                              //     );
-                              //   },
-                              // ),
-                              const SizedBox(
+                              SizedBox(
                                 width: 10,
                               ),
-                              const Icon(Ionicons.chatbubble_outline),
+                              GestureDetector(
+                                  onTap: () {
+                                    // PostDetail
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute<void>(
+                                          builder: (context) => PostDetail()),
+                                    );
+                                  },
+                                  child: Icon(Ionicons.chatbubble_outline)),
                             ]),
                       ],
                     ),
@@ -288,83 +280,83 @@ class _PostsState extends State<Posts> {
 //   print('Button pressed');
 // }
 
-Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot) {
-  return SizedBox(
-    height: MediaQuery.of(context).size.height,
-    child: ListView(
-        primary: false,
-        children:
-            snapshot.map((data) => _buildListItem(context, data)).toList()),
-  );
-}
+// Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot) {
+//   return SizedBox(
+//     height: MediaQuery.of(context).size.height,
+//     child: ListView(
+//         primary: false,
+//         children:
+//             snapshot.map((data) => _buildListItem(context, data)).toList()),
+//   );
+// }
 
-Widget _buildListItem(BuildContext context, DocumentSnapshot snapshot) {
-  final post = Post.fromSnapshot(snapshot);
+// Widget _buildListItem(BuildContext context, DocumentSnapshot snapshot) {
+//   final post = Post.fromSnapshot(snapshot);
 
-  return Padding(
-    padding: const EdgeInsets.all(8.0),
-    child: Column(
-      children: [
-        Card(
-          elevation: 8,
-          shadowColor: Colors.grey.withOpacity(0.15),
-          child: Padding(
-            padding: const EdgeInsets.all(14.0),
-            child: Column(
-              children: [
-                //insert an small image here
+//   return Padding(
+//     padding: const EdgeInsets.all(8.0),
+//     child: Column(
+//       children: [
+//         Card(
+//           elevation: 8,
+//           shadowColor: Colors.grey.withOpacity(0.15),
+//           child: Padding(
+//             padding: const EdgeInsets.all(14.0),
+//             child: Column(
+//               children: [
+//                 //insert an small image here
 
-                Row(
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(16.0),
-                      child: Image.network(
-                        "https://cdn.dribbble.com/users/60880/screenshots/1497124/avatar.png",
-                        height: 30,
-                        // width: 30,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Text("roshan.parajuli")
-                  ],
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Text(post.postContent.toString()),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      LikeButton(
-                        size: 30,
-                        circleColor: const CircleColor(
-                            start: Color(0xff90ee90), end: Color(0xff0099cc)),
-                        likeBuilder: (bool isLiked) {
-                          return Icon(
-                            // icon: Feather.heart,
-                            isLiked ? Ionicons.heart : Ionicons.heart_outline,
-                            color:
-                                // isLiked ? Color(0xFF88C03D) : Colors.grey[700],
-                                isLiked ? Colors.red : Colors.grey[700],
-                            size: 30,
-                          );
-                        },
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      const Icon(Ionicons.chatbubble_outline),
-                    ]),
-              ],
-            ),
-          ),
-        ),
-      ],
-    ),
-  );
-}
+//                 Row(
+//                   children: [
+//                     ClipRRect(
+//                       borderRadius: BorderRadius.circular(16.0),
+//                       child: Image.network(
+//                         "https://cdn.dribbble.com/users/60880/screenshots/1497124/avatar.png",
+//                         height: 30,
+//                         // width: 30,
+//                       ),
+//                     ),
+//                     SizedBox(
+//                       width: 10,
+//                     ),
+//                     Text("roshan.parajuli")
+//                   ],
+//                 ),
+//                 SizedBox(
+//                   height: 10,
+//                 ),
+//                 Text(post.postContent.toString()),
+//                 // Row(
+//                 //     mainAxisAlignment: MainAxisAlignment.end,
+//                 //     children: <Widget>[
+//                 //       LikeButton(
+//                 //         size: 30,
+//                 //         circleColor: const CircleColor(
+//                 //             start: Color(0xff90ee90), end: Color(0xff0099cc)),
+//                 //         likeBuilder: (bool isLiked) {
+//                 //           return Icon(
+//                 //             // icon: Feather.heart,
+//                 //             isLiked ? Ionicons.heart : Ionicons.heart_outline,
+//                 //             color:
+//                 //                 // isLiked ? Color(0xFF88C03D) : Colors.grey[700],
+//                 //                 isLiked ? Colors.red : Colors.grey[700],
+//                 //             size: 30,
+//                 //           );
+//                 //         },
+//                 //       ),
+//                 //       const SizedBox(
+//                 //         width: 10,
+//                 //       ),
+//                 //       const Icon(Ionicons.chatbubble_outline),
+//                 //     ]),
+//               ],
+//             ),
+//           ),
+//         ),
+//       ],
+//     ),
+//   );
+// }
 
 // Future<List<Data>> fetchData() async {
 //   final http.Response response =
