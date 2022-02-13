@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:ui';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
@@ -8,11 +9,14 @@ import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:kalpaniksaathi/models/messages.dart';
+import 'package:kalpaniksaathi/repository/data_repository.dart';
 // import 'package:intl/date_symbol_data_local.dart';
 import 'package:mime/mime.dart';
 import 'package:open_file/open_file.dart';
 import 'package:uuid/uuid.dart';
 import 'package:http/http.dart' as http;
+import 'package:kalpaniksaathi/services/auth.dart';
 
 class ChatPage extends StatefulWidget {
   const ChatPage({Key? key}) : super(key: key);
@@ -25,6 +29,8 @@ class _ChatPageState extends State<ChatPage> {
   List<types.Message> _messages = [];
   final _user = const types.User(id: 'ro');
   final _userBot = const types.User(id: 'bot');
+  final DataRepository repository = DataRepository();
+  final AuthService auth = AuthService();
 
   @override
   void initState() {
@@ -159,6 +165,17 @@ class _ChatPageState extends State<ChatPage> {
 
     _addMessage(textMessage);
 
+    //send message to db here
+    final messageDB = Messages(
+        author: "Rasa",
+        createdAt: DateTime.now().millisecondsSinceEpoch,
+        id: auth.getUser().uid.toString(),
+        seen: "false",
+        text: message.text,
+        type: "text");
+
+    repository.addMessage(messageDB);
+
     //send message to rasa here
 
     final queryParameters = {
@@ -185,13 +202,30 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   void _loadMessages() async {
-    final response = await rootBundle.loadString('assets/messages.json');
-    final messages = (jsonDecode(response) as List)
-        .map((dynamic e) => types.Message.fromJson(e as Map<String, dynamic>))
-        .toList();
-    setState(() {
-      _messages = messages;
+    final String user_id = auth.getUser().uid.toString();
+    final QuerySnapshot<Map<String, dynamic>> msg_db = await repository
+        .getMessages(user_id) as QuerySnapshot<Map<String, dynamic>>;
+
+    msg_db.docs.forEach((QueryDocumentSnapshot<Map<String, dynamic>> doc) {
+      final Messages postdata = Messages.fromSnapshot(doc);
+
+      final textMessage = types.TextMessage(
+        author: _user,
+        createdAt: postdata.createdAt,
+        id: postdata.id.toString(),
+        text: postdata.text.toString(),
+      );
+
+      _addMessage(textMessage);
     });
+
+    // final response = await rootBundle.loadString('assets/messages.json');
+    // final messages = (jsonDecode(response) as List)
+    //     .map((dynamic e) => types.Message.fromJson(e as Map<String, dynamic>))
+    //     .toList();
+    // setState(() {
+    //   _messages = messages;
+    // });
   }
 
   @override
@@ -201,33 +235,49 @@ class _ChatPageState extends State<ChatPage> {
     return Scaffold(
       body: SafeArea(
         bottom: false,
-        child: Chat(
-          theme: DefaultChatTheme(
-            sentMessageBodyTextStyle: const TextStyle(
-              // fontFamily: 'Roboto',
-              fontSize: 14,
-            ),
-            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-            inputBackgroundColor:
-                Theme.of(context).primaryColor == const Color(0xffffffff)
-                    ? Colors.white30
-                    : const Color.fromRGBO(43, 10, 69, 0.9),
-            // inputTextStyle: TextStyle(color: Colors.black),
-            inputBorderRadius: BorderRadius.circular(10),
-            inputTextStyle: const TextStyle(
-                // fontFamily: 'Schoolbell'
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(0, 0, 0, 80),
+          child: Chat(
+            showUserAvatars: true,
+            theme: DefaultChatTheme(
+                secondaryColor: Colors.deepPurple.shade900,
+                primaryColor: Colors.deepPurple.shade900,
+                sentMessageBodyTextStyle: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 14,
                 ),
-
-            inputPadding:
-                const EdgeInsets.symmetric(horizontal: 36, vertical: 16),
-            sendButtonIcon: const Icon(AntDesign.right),
+                receivedMessageBodyTextStyle: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 15,
+                ),
+                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                inputBackgroundColor:
+                    Theme.of(context).primaryColor == const Color(0xffffffff)
+                        ? Colors.white30
+                        // : const Color.fromRGBO(43, 10, 69, 0.9),
+                        : Colors.deepPurple.shade900,
+                // inputTextStyle: TextStyle(color: Colors.black),
+                inputBorderRadius: BorderRadius.circular(10),
+                inputTextStyle: const TextStyle(
+                    // fontFamily: 'Schoolbell'
+                    ),
+                inputPadding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                sendButtonIcon: const Icon(
+                  AntDesign.right,
+                  color: Colors.white,
+                ),
+                deliveredIcon: const Icon(
+                  AntDesign.check,
+                  color: Colors.white,
+                )),
+            messages: _messages,
+            // onAttachmentPressed: _handleAtachmentPressed,
+            onMessageTap: _handleMessageTap,
+            onPreviewDataFetched: _handlePreviewDataFetched,
+            onSendPressed: _handleSendPressed,
+            user: _user,
           ),
-          messages: _messages,
-          // onAttachmentPressed: _handleAtachmentPressed,
-          onMessageTap: _handleMessageTap,
-          onPreviewDataFetched: _handlePreviewDataFetched,
-          onSendPressed: _handleSendPressed,
-          user: _user,
         ),
       ),
     );
