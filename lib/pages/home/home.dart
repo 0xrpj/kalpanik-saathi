@@ -1,6 +1,7 @@
 import 'package:custom_navigation_bar/custom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:kalpaniksaathi/pages/podcast/listen_page.dart';
 import 'package:kalpaniksaathi/pages/widgets/appbar.dart';
 import 'package:kalpaniksaathi/pages/posts/post_detail.dart';
 import 'package:kalpaniksaathi/services/auth.dart';
@@ -21,11 +22,12 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   final AuthService _auth = AuthService();
   int _currentIndex = 0;
-  final tabs = [ChatPage(), Posts(), PostDetail()];
+  final tabs = [ChatPage(), Posts(), ListenPage()];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: const PreferredSize(
             preferredSize: Size.fromHeight(60), child: AppBarWidget()),
         body: Stack(children: [
