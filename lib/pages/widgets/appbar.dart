@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
+import 'package:kalpaniksaathi/services/auth.dart';
 import 'package:kalpaniksaathi/widgets/snackbar.dart';
 
 class AppBarWidget extends StatefulWidget {
@@ -10,6 +11,8 @@ class AppBarWidget extends StatefulWidget {
 }
 
 class _AppBarWidgetState extends State<AppBarWidget> {
+  final AuthService _auth = AuthService();
+
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -37,7 +40,7 @@ class _AppBarWidgetState extends State<AppBarWidget> {
             onPressed: () async {
               CustomSnackBar(context,
                   const Text('Tata 👋. Hope you have a great time ahead.'));
-              // await _auth.signOut();
+              await _auth.signOut();
             },
             icon: const Icon(AntDesign.logout),
             label: const Text(''),
