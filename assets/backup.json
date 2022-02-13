@@ -1,0 +1,57 @@
+[
+    {
+        "author": {
+            "firstName": "John",
+            "id": "b4878b96-efbc-479a-8291-474ef323dec7",
+            "imageUrl": "https://avatars.githubusercontent.com/u/14123304?v=4"
+        },
+        "createdAt": 1598438786000,
+        "id": "8fa70836-3309-4d09-a777-4d9603e1f123",
+        "status": "seen",
+        "text": "Hi, I am glad you are here 😊! Let's have a conversation!",
+        "type": "text"
+    },
+    {
+        "author": {
+            "firstName": "John",
+            "id": "b4878b96-efbc-479a-8291-474ef323dec7",
+            "imageUrl": "https://avatars.githubusercontent.com/u/14123304?v=4"
+        },
+        "createdAt": 1598438785000,
+        "height": 600,
+        "id": "8fa70836-3309-4d09-a777-4d9603e1f124",
+        "name": "image",
+        "size": 59645,
+        "status": "seen",
+        "type": "image",
+        "uri": "https://mymodernmet.com/wp/wp-content/uploads/2020/07/jangandfox-14.jpg",
+        "width": 1128
+    },
+    {
+        "author": {
+            "firstName": "John",
+            "id": "b4878b96-efbc-479a-8291-474ef323dec7",
+            "imageUrl": "https://avatars.githubusercontent.com/u/14123304?v=4"
+        },
+        "createdAt": 1598438784000,
+        "id": "8fa70836-3309-4d09-a777-4d9603e1f125",
+        "mimeType": "image/jpg",
+        "name": "image.jpg",
+        "size": 59645,
+        "status": "seen",
+        "type": "file",
+        "uri": "https://hcti.io/v1/image/c1ea794e-32c7-4516-bd0f-8b835e8a2f2e"
+    },
+    {
+        "author": {
+            "firstName": "John",
+            "id": "b4878b96-efbc-479a-8291-474ef323dec7",
+            "imageUrl": "https://avatars.githubusercontent.com/u/14123304?v=4"
+        },
+        "createdAt": 1598438797000,
+        "id": "e7a673e9-86eb-4572-936f-2882b0183cdc",
+        "status": "seen",
+        "text": "https://roshanparajuli.com.np",
+        "type": "text"
+    }
+]
