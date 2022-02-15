@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:kalpaniksaathi/models/posts.dart';
 import 'package:kalpaniksaathi/models/messages.dart';
+import 'package:kalpaniksaathi/models/posts.dart';
 
 class DataRepository {
   final CollectionReference posts_collection =
@@ -17,6 +17,10 @@ class DataRepository {
         .where('id', isEqualTo: id)
         .orderBy('createdAt', descending: false)
         .get();
+  }
+
+  Future<DocumentSnapshot> getPostDetail(String docId) {
+    return posts_collection.doc(docId).get();
   }
 
   Future<DocumentReference> addPost(Post post) {
