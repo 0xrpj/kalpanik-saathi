@@ -5,10 +5,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:kalpaniksaathi/models/posts.dart';
+import 'package:kalpaniksaathi/pages/posts/post_detail.dart';
 import 'package:kalpaniksaathi/repository/data_repository.dart';
 import 'package:kalpaniksaathi/services/auth.dart';
-import 'package:like_button/like_button.dart';
-import 'package:kalpaniksaathi/pages/posts/post_detail.dart';
 import 'package:velocity_x/src/extensions/context_ext.dart';
 
 final List<Post> _postData = [];
@@ -23,7 +22,7 @@ class Posts extends StatefulWidget {
 class _PostsState extends State<Posts> {
   final DataRepository repository = DataRepository();
   final User _currentUser = AuthService().getUser();
-  TextEditingController _postBodyController = TextEditingController();
+  final TextEditingController _postBodyController = TextEditingController();
 
   @override
   void initState() {
@@ -62,7 +61,7 @@ class _PostsState extends State<Posts> {
                         ))),
                     onPressed: () {},
                     child: const Text(
-                      "Have anything to share? ",
+                      'Have anything to share? ',
                       style: TextStyle(
                         fontFamily: 'PoppinsLight',
                         fontWeight: FontWeight.w400,
@@ -107,9 +106,9 @@ class _PostsState extends State<Posts> {
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(16.0),
                                 child: Image.network(
-                                  "https://avatars.dicebear.com/api/micah/" +
+                                  'https://avatars.dicebear.com/api/micah/' +
                                       _postData[index].userId.toString() +
-                                      ".png",
+                                      '.png',
                                   height: 30,
                                   // width: 30,
                                 ),
@@ -117,7 +116,7 @@ class _PostsState extends State<Posts> {
                               SizedBox(
                                 width: 10,
                               ),
-                              Text("roshan.parajuli says",
+                              Text('roshan.parajuli says',
                                   style: TextStyle(
                                     fontFamily: 'PoppinsLight',
                                     fontWeight: FontWeight.w900,
@@ -151,11 +150,14 @@ class _PostsState extends State<Posts> {
                                 ),
                                 GestureDetector(
                                     onTap: () {
-                                      // PostDetail
+                                      // print();
+
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute<void>(
-                                            builder: (context) => PostDetail()),
+                                            builder: (context) => PostDetail(
+                                                postId: _postData[index].postId
+                                                    as String)),
                                       );
                                     },
                                     child: Icon(Ionicons.chatbubble_outline)),
