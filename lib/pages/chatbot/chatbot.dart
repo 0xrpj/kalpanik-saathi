@@ -1,22 +1,21 @@
 import 'dart:convert';
-import 'dart:io';
 import 'dart:ui';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
+import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:kalpaniksaathi/models/messages.dart';
 import 'package:kalpaniksaathi/repository/data_repository.dart';
+import 'package:kalpaniksaathi/services/auth.dart';
 // import 'package:intl/date_symbol_data_local.dart';
 import 'package:mime/mime.dart';
 import 'package:open_file/open_file.dart';
 import 'package:uuid/uuid.dart';
-import 'package:http/http.dart' as http;
-import 'package:kalpaniksaathi/services/auth.dart';
 
 class ChatPage extends StatefulWidget {
   const ChatPage({Key? key}) : super(key: key);
@@ -26,7 +25,7 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
-  List<types.Message> _messages = [];
+  final List<types.Message> _messages = [];
   final _user = const types.User(id: 'ro');
   final _userBot = const types.User(id: 'bot');
   final DataRepository repository = DataRepository();
@@ -167,12 +166,12 @@ class _ChatPageState extends State<ChatPage> {
 
     //send message to db here
     final messageDB = Messages(
-        author: "Rasa",
+        author: 'Rasa',
         createdAt: DateTime.now().millisecondsSinceEpoch,
         id: auth.getUser().uid.toString(),
-        seen: "false",
+        seen: 'false',
         text: message.text,
-        type: "text");
+        type: 'text');
 
     repository.addMessage(messageDB);
 
@@ -182,12 +181,14 @@ class _ChatPageState extends State<ChatPage> {
       'message': message.text,
       // 'sender': 'Roshan',
     };
-    final String apiUri =
-        'https://levchatbot.herokuapp.com/webhooks/rest/webhook/';
+    const String apiUri =
+        'https://rasa-server-rsnpj.cloud.okteto.net/webhooks/rest/webhook/';
 
     // final headers = {HttpHeaders.contentTypeHeader: 'application/json'};
     final response =
         await http.post(Uri.parse(apiUri), body: json.encode(queryParameters));
+
+    print(response.body);
 
     final responseJson = json.decode(response.body)[0]['text'].toString();
 
@@ -202,11 +203,11 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   void _loadMessages() async {
-    final String user_id = auth.getUser().uid.toString();
-    final QuerySnapshot<Map<String, dynamic>> msg_db = await repository
-        .getMessages(user_id) as QuerySnapshot<Map<String, dynamic>>;
+    final String userId = auth.getUser().uid.toString();
+    final QuerySnapshot<Map<String, dynamic>> msgDb = await repository
+        .getMessages(userId) as QuerySnapshot<Map<String, dynamic>>;
 
-    msg_db.docs.forEach((QueryDocumentSnapshot<Map<String, dynamic>> doc) {
+    msgDb.docs.forEach((QueryDocumentSnapshot<Map<String, dynamic>> doc) {
       final Messages postdata = Messages.fromSnapshot(doc);
 
       final textMessage = types.TextMessage(
