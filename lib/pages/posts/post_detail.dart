@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:kalpaniksaathi/repository/data_repository.dart';
@@ -105,13 +107,112 @@ class _PostDetailState extends State<PostDetail> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15.0),
                 ),
-                margin: EdgeInsets.all(8.0),
-                elevation: 8,
+                elevation: 18,
                 shadowColor: Colors.grey.withOpacity(0.15),
                 child: Padding(
-                  padding: const EdgeInsets.all(14.0),
-                  child: Text('Comments should load here!!'),
-                ))
+                    padding: EdgeInsets.all(14.0),
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
+                        margin: EdgeInsets.all(8.0),
+                        // elevation: 8,
+                        shadowColor: Colors.grey.withOpacity(0),
+                        // child: Text('Hello')
+                        child: Column(
+                          children: [
+                            Text(
+                              'Comments',
+                              // style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            SizedBox(
+                              width: double.infinity,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Card(
+                                  margin: EdgeInsets.all(8.0),
+                                  // elevation: 8,
+                                  shadowColor: Colors.grey.withOpacity(0.15),
+                                  child: Text('Comment1'),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            SizedBox(
+                              width: double.infinity,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Card(
+                                  margin: EdgeInsets.all(8.0),
+                                  // elevation: 8,
+                                  shadowColor: Colors.grey.withOpacity(0.15),
+                                  child: Text('Comment2'),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            SizedBox(
+                              width: double.infinity,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Card(
+                                  margin: EdgeInsets.all(8.0),
+                                  // elevation: 8,
+                                  shadowColor: Colors.grey.withOpacity(0.15),
+                                  child: Text('Comment3'),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ))),
+            Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15.0),
+                ),
+                elevation: 18,
+                shadowColor: Colors.grey.withOpacity(0.15),
+                child: Padding(
+                    padding: EdgeInsets.all(14.0),
+                    child: SizedBox(
+                        width: double.infinity,
+                        child: Column(
+                          children: const [
+                            Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: TextField(
+                                // controller: _postBodyController,
+                                // style: TextStyle(
+                                //   height: 5.0,
+                                // ),
+
+                                maxLines: null,
+                                decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    labelText: 'Write something',
+                                    labelStyle: TextStyle(
+                                      fontFamily: 'WorkSansMedium',
+                                      fontSize: 15,
+                                    ),
+                                    focusColor: Color(0xFF88C03D)
+
+                                    // isDense: true,
+                                    // contentPadding: EdgeInsets.all(28),
+                                    ),
+                              ),
+                            ),
+                          ],
+                        ))))
           ],
         )),
       )),
