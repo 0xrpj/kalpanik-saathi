@@ -188,8 +188,6 @@ class _ChatPageState extends State<ChatPage> {
     final response =
         await http.post(Uri.parse(apiUri), body: json.encode(queryParameters));
 
-    print(response.body);
-
     final responseJson = json.decode(response.body)[0]['text'].toString();
 
     final textMessage2 = types.TextMessage(
@@ -200,6 +198,16 @@ class _ChatPageState extends State<ChatPage> {
     );
 
     _addMessage(textMessage2);
+
+    final messageBotDB = Messages(
+        author: 'Rasa',
+        createdAt: DateTime.now().millisecondsSinceEpoch,
+        id: 'bot',
+        seen: 'false',
+        text: message.text,
+        type: 'text');
+
+    repository.addMessage(messageBotDB);
   }
 
   void _loadMessages() async {
