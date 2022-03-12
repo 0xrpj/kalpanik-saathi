@@ -20,87 +20,81 @@ class _AddPostState extends State<AddPost> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Container(
-          padding: EdgeInsets.all(18.0),
-          // color: Colors.white60,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(10),
-                topRight: Radius.circular(10),
-                bottomLeft: Radius.circular(10),
-                bottomRight: Radius.circular(10)),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.15),
-                spreadRadius: 5,
-                blurRadius: 7,
-                offset: Offset(0, 3), // changes position of shadow
-              ),
-            ],
-          ),
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            const SizedBox(
-              height: 10,
-            ),
-            const Text(
-              'Share your feelings',
-              style: TextStyle(fontFamily: 'WorkSansMedium', fontSize: 17),
-            ),
-            const SizedBox(
-              height: 22,
-            ),
-            TextField(
-              controller: _postBodyController,
-              style: TextStyle(
-                height: 5.0,
-              ),
-              maxLines: null,
-              decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Write',
-                  labelStyle: TextStyle(
-                    fontFamily: 'WorkSansMedium',
-                    fontSize: 15,
-                  ),
-                  focusColor: Color(0xFF88C03D)
+          body: Container(
+              height: 500,
+              child: Card(
+                // give height and width to the card
 
-                  // isDense: true,
-                  // contentPadding: EdgeInsets.all(28),
-                  ),
-            ),
-            const SizedBox(
-              height: 22,
-            ),
-            ElevatedButton(
-              style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(Color(0xFF00AC97)),
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(14.0),
-                  ))),
-              onPressed: () {
-                // getPosts();
-                final newPost = Post('post1',
-                    userId: _currentUser.uid.toString(),
-                    postContent: _postBodyController.text,
-                    createdAt: DateTime.now().millisecondsSinceEpoch);
-                repository.addPost(newPost);
-                print('posted');
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15.0),
+                ),
+                margin: EdgeInsets.all(8.0),
+                elevation: 8,
+                shadowColor: Colors.grey.withOpacity(0.15),
+                child: Padding(
+                  padding: const EdgeInsets.all(14.0),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: const [
+                          Text('Share with your heart\'s content!',
+                              style: TextStyle(
+                                fontFamily: 'PoppinsLight',
+                                fontWeight: FontWeight.w900,
+                                fontSize: 14.0,
+                                letterSpacing: 0.3,
+                              ))
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      // const Text(
+                      //   'Share your feelings',
+                      //   style: TextStyle(
+                      //       fontFamily: 'WorkSansMedium', fontSize: 17),
+                      // ),
+                      TextField(
+                          controller: _postBodyController,
+                          style: const TextStyle(
+                            height: 1.0,
+                          ),
+                          maxLines: null),
+                      ElevatedButton(
+                        style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                                Color(0xFF00AC97)),
+                            shape: MaterialStateProperty.all<
+                                RoundedRectangleBorder>(RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(14.0),
+                            ))),
+                        onPressed: () {
+                          final newPost = Post('post1',
+                              userId: _currentUser.uid.toString(),
+                              postContent: _postBodyController.text,
+                              createdAt: DateTime.now().millisecondsSinceEpoch);
+                          repository.addPost(newPost);
 
-                // setState(() {
-                //   _postBodyController.clear();
-                //   didChangeDependencies();
-                // });
-              },
-              child: const Text('Share',
-                  style: TextStyle(fontSize: 15, fontFamily: 'WorkSansMedium')),
-            ),
-          ]),
-        ),
-      ),
+                          // setState(() {
+                          //   _postBodyController.clear();
+                          //   didChangeDependencies();
+                          // });
+
+                          // onlick navigator pop
+                          Navigator.pop(context);
+                          // Navigator.pushReplacement(
+                          //     context,
+                          //     MaterialPageRoute<void>(
+                          //         builder: (context) => Posts()));
+                        },
+                        child: const Text('Share',
+                            style: TextStyle(
+                                fontSize: 15, fontFamily: 'WorkSansMedium')),
+                      ),
+                    ],
+                  ),
+                ),
+              ))),
     );
   }
 }

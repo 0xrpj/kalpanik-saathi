@@ -27,13 +27,17 @@ class _PostsState extends State<Posts> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      getPosts();
+      print('GET POSTS CALLED');
+    });
   }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    getPosts();
-  }
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //   getPosts();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +68,13 @@ class _PostsState extends State<Posts> {
                         context,
                         MaterialPageRoute<void>(
                             builder: (context) => AddPost()),
-                      );
+                      ).then((_) => {
+                            // getPosts()
+                            // setState(() {
+                            //   _postData.length;
+                            // })
+                            super.didChangeDependencies()
+                          });
                     },
                     child: const Text(
                       'Have anything to share? ',
@@ -119,10 +129,10 @@ class _PostsState extends State<Posts> {
                                   // width: 30,
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 10,
                               ),
-                              Text('roshan.parajuli says',
+                              const Text('Somebody says',
                                   style: TextStyle(
                                     fontFamily: 'PoppinsLight',
                                     fontWeight: FontWeight.w900,
@@ -174,96 +184,6 @@ class _PostsState extends State<Posts> {
                   );
                 },
               )
-
-              // StreamBuilder<QuerySnapshot>(
-              //     stream: repository.getStream(),
-              //     builder: (context, snapshot) {
-              //       if (!snapshot.hasData) return LinearProgressIndicator();
-
-              //       return _buildList(context, snapshot.data?.docs ?? []);
-              //     }),
-
-              // Expanded(
-              //   child: FutureBuilder(
-              //       future: futureData,
-              //       builder: (context, snapshot) {
-              //         if (snapshot.hasData) {
-              //           List<Data> data = snapshot.data as List<Data>;
-              //           print(data);
-
-              //           return ListView.builder(
-              //               shrinkWrap: true,
-              //               itemCount: data.length,
-              //               itemBuilder: (BuildContext context, int index) {
-              //                 // return Container(
-              //                 //   height: 45,
-              //                 //   color: Colors.white,
-              //                 //   child: SingleChildScrollView(
-              //                 //     child: Center(
-              //                 //       child: Text(data[index].title as String),
-              //                 //     ),
-              //                 //   ),
-              //                 // );
-              //                 return SingleChildScrollView(
-              //                   child: Column(
-              //                     children: <Widget>[
-              //                       const Padding(
-              //                         padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
-              //                         child: ListTile(
-              //                           // title: Text(data[index].title as String),
-              //                           title: Text('Lorem'),
-              //                         ),
-              //                       ),
-              //                       Padding(
-              //                         padding: EdgeInsets.fromLTRB(0, 0, 0, 30),
-              //                         child: Row(
-              //                           mainAxisAlignment: MainAxisAlignment.end,
-              //                           children: <Widget>[
-              //                             LikeButton(
-              //                               size: 30,
-              //                               circleColor: const CircleColor(
-              //                                   start: Color(0xff90ee90),
-              //                                   end: Color(0xff0099cc)),
-              //                               bubblesColor: const BubblesColor(
-              //                                 dotPrimaryColor: Colors.green,
-              //                                 dotSecondaryColor:
-              //                                     Color(0xff0099cc),
-              //                               ),
-              //                               likeBuilder: (bool isLiked) {
-              //                                 return Icon(
-              //                                   // icon: Feather.heart,
-              //                                   Ionicons.heart_outline,
-              //                                   color: isLiked
-              //                                       ? Colors.red[600]
-              //                                       : Colors.black,
-              //                                   size: 30,
-              //                                 );
-              //                               },
-              //                             ),
-
-              //                             SizedBox(
-              //                               width: 10,
-              //                             ),
-
-              //                             Icon(Ionicons.chatbubble_outline),
-              //                             // Text('Dislike'),
-              //                           ],
-              //                         ),
-              //                       ),
-              //                     ],
-              //                   ),
-              //                 );
-              //               });
-              //         } else if (snapshot.hasError) {
-              //           return Text("${snapshot.error}");
-              //         } else {
-              //           return Text('');
-              //         }
-              //       }),
-              // ),
-              // ],
-              // ),
-              // )
             ],
           ),
         ),
@@ -286,104 +206,3 @@ class _PostsState extends State<Posts> {
     });
   }
 }
-
-// void printHi() {
-//   print('Button pressed');
-// }
-
-// Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot) {
-//   return SizedBox(
-//     height: MediaQuery.of(context).size.height,
-//     child: ListView(
-//         primary: false,
-//         children:
-//             snapshot.map((data) => _buildListItem(context, data)).toList()),
-//   );
-// }
-
-// Widget _buildListItem(BuildContext context, DocumentSnapshot snapshot) {
-//   final post = Post.fromSnapshot(snapshot);
-
-//   return Padding(
-//     padding: const EdgeInsets.all(8.0),
-//     child: Column(
-//       children: [
-//         Card(
-//           elevation: 8,
-//           shadowColor: Colors.grey.withOpacity(0.15),
-//           child: Padding(
-//             padding: const EdgeInsets.all(14.0),
-//             child: Column(
-//               children: [
-//                 //insert an small image here
-
-//                 Row(
-//                   children: [
-//                     ClipRRect(
-//                       borderRadius: BorderRadius.circular(16.0),
-//                       child: Image.network(
-//                         "https://cdn.dribbble.com/users/60880/screenshots/1497124/avatar.png",
-//                         height: 30,
-//                         // width: 30,
-//                       ),
-//                     ),
-//                     SizedBox(
-//                       width: 10,
-//                     ),
-//                     Text("roshan.parajuli")
-//                   ],
-//                 ),
-//                 SizedBox(
-//                   height: 10,
-//                 ),
-//                 Text(post.postContent.toString()),
-//                 // Row(
-//                 //     mainAxisAlignment: MainAxisAlignment.end,
-//                 //     children: <Widget>[
-//                 //       LikeButton(
-//                 //         size: 30,
-//                 //         circleColor: const CircleColor(
-//                 //             start: Color(0xff90ee90), end: Color(0xff0099cc)),
-//                 //         likeBuilder: (bool isLiked) {
-//                 //           return Icon(
-//                 //             // icon: Feather.heart,
-//                 //             isLiked ? Ionicons.heart : Ionicons.heart_outline,
-//                 //             color:
-//                 //                 // isLiked ? Color(0xFF88C03D) : Colors.grey[700],
-//                 //                 isLiked ? Colors.red : Colors.grey[700],
-//                 //             size: 30,
-//                 //           );
-//                 //         },
-//                 //       ),
-//                 //       const SizedBox(
-//                 //         width: 10,
-//                 //       ),
-//                 //       const Icon(Ionicons.chatbubble_outline),
-//                 //     ]),
-//               ],
-//             ),
-//           ),
-//         ),
-//       ],
-//     ),
-//   );
-// }
-
-// Future<List<Data>> fetchData() async {
-//   final http.Response response =
-//       await http.get(Uri.parse('https://jsonplaceholder.typicode.com/albums'));
-
-//   if (response.statusCode == 200) {
-//     final List<dynamic> jsonResponse =
-//         json.decode(response.body) as List<dynamic>;
-//     return jsonResponse
-//         .map((dynamic data) => Data.fromJson(data as Map<String, dynamic>))
-//         .toList();
-//   } else {
-//     throw Exception('Unexpected error occured!');
-//   }
-// }
-
-
-
-

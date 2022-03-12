@@ -71,13 +71,13 @@ class _ListenPageState extends State<ListenPage> {
       padding: const EdgeInsets.only(top: 10, bottom: 80),
       child: Container(
           child: Stack(children: [
-        VxAnimatedBox()
-            .size(context.screenWidth, context.screenHeight)
-            .withGradient(const LinearGradient(
-                colors: [Colors.greenAccent, Colors.green],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight))
-            .make(),
+        // VxAnimatedBox()
+        //     .size(context.screenWidth, context.screenHeight)
+        //     .withGradient(const LinearGradient(
+        //         colors: [Colors.greenAccent, Colors.green],
+        //         begin: Alignment.topLeft,
+        //         end: Alignment.bottomRight))
+        //     .make(),
         VxSwiper.builder(
             itemCount: audios.length,
             aspectRatio: 1,

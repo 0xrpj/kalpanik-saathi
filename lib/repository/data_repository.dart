@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:kalpaniksaathi/models/comments.dart';
 import 'package:kalpaniksaathi/models/messages.dart';
 import 'package:kalpaniksaathi/models/posts.dart';
 
@@ -7,6 +8,8 @@ class DataRepository {
       FirebaseFirestore.instance.collection('posts');
   final CollectionReference messages_collection =
       FirebaseFirestore.instance.collection('messages');
+  final CollectionReference comments_collection =
+      FirebaseFirestore.instance.collection('comments');
 
   Stream<QuerySnapshot> getStream() {
     return posts_collection.snapshots();
@@ -29,6 +32,10 @@ class DataRepository {
 
   Future<DocumentReference> addMessage(Messages message) {
     return messages_collection.add(message.toJson());
+  }
+
+  Future<DocumentReference> addComment(Comment comment) {
+    return comments_collection.add(comment.toJson());
   }
 
   void updatePost(Post post) async {
