@@ -44,6 +44,7 @@ flutter:
   assets:
     - assets/img/
     - assets/messages.json
+    - assets/audio.json
 
   fonts:
     - family: WorkSansSemiBold
