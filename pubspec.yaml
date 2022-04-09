@@ -21,6 +21,7 @@ dependencies:
   flutter_chat_ui: ^1.5.3
   flutter_vector_icons: ^1.0.0
   font_awesome_flutter: null
+  # google_sign_in: '^4.5.1'
   http: ^0.13.4
   image_picker: ^0.8.4+4
   json_serializable: ^6.1.4

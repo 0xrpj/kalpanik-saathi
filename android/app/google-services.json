@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "922789717765-ou42ht8ruik7seesnbuspjuf5j57sfq7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.roshanparajuli.kalpaniksaathi",
+            "certificate_hash": "77547fabd3cd09ab95dd1a3416867265fb67a731"
+          }
+        },
+        {
           "client_id": "922789717765-j0coqgkiqi2mt0hj95rg0bv9304kv6lh.apps.googleusercontent.com",
           "client_type": 3
         }
