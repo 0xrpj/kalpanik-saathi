@@ -1,16 +1,10 @@
-import 'package:custom_navigation_bar/custom_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:kalpaniksaathi/pages/podcast/listen_page.dart';
-import 'package:kalpaniksaathi/pages/widgets/appbar.dart';
-import 'package:kalpaniksaathi/pages/posts/post_detail.dart';
-import 'package:kalpaniksaathi/services/auth.dart';
-import 'package:kalpaniksaathi/theme.dart';
-import 'package:kalpaniksaathi/widgets/snackbar.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
-import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:kalpaniksaathi/pages/chatbot/chatbot.dart';
+import 'package:kalpaniksaathi/pages/podcast/listen_page.dart';
 import 'package:kalpaniksaathi/pages/posts/posts.dart';
+import 'package:kalpaniksaathi/pages/widgets/appbar.dart';
+import 'package:kalpaniksaathi/services/auth.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -43,12 +37,12 @@ class _HomeState extends State<Home> {
                 borderRadius: BorderRadius.only(
                     topRight: Radius.circular(30),
                     topLeft: Radius.circular(30)),
-                boxShadow: [
-                  BoxShadow(
-                      color: Colors.grey.shade300,
-                      spreadRadius: 0,
-                      blurRadius: 8),
-                ],
+                // boxShadow: [
+                //   BoxShadow(
+                //       color: Colors.grey.shade300,
+                //       spreadRadius: 0,
+                //       blurRadius: 1),
+                // ],
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.all(
@@ -82,10 +76,10 @@ class _HomeState extends State<Home> {
                         ),
                       ],
                       currentIndex: _currentIndex,
-                      selectedItemColor: Theme.of(context).primaryColor,
+                      // selectedItemColor: Theme.of(context).primaryColor,
                       unselectedItemColor: Colors.grey,
                       elevation: 0.0,
-                      backgroundColor: Colors.white,
+                      backgroundColor: Theme.of(context).primaryColorLight,
                       // showTooltip: false,
                       onTap: (index) {
                         setState(() {

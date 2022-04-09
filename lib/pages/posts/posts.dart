@@ -1,17 +1,17 @@
 import 'dart:ui';
 
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:kalpaniksaathi/models/posts.dart';
 import 'package:kalpaniksaathi/pages/posts/add_post.dart';
-import 'package:kalpaniksaathi/pages/posts/post_detail.dart';
 import 'package:kalpaniksaathi/repository/data_repository.dart';
 import 'package:kalpaniksaathi/services/auth.dart';
 import 'package:velocity_x/src/extensions/context_ext.dart';
 
-final List<Post> _postData = [];
+import 'post_detail.dart';
 
 class Posts extends StatefulWidget {
   const Posts({Key? key}) : super(key: key);
@@ -23,20 +23,20 @@ class Posts extends StatefulWidget {
 class _PostsState extends State<Posts> {
   final DataRepository repository = DataRepository();
   final User _currentUser = AuthService().getUser();
+  List<Post> _postData = [];
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
-      getPosts();
-      print('GET POSTS CALLED');
-    });
+    // WidgetsBinding.instance!.addPostFrameCallback((_) {
+    getPosts();
+    // });
   }
 
   // @override
   // void didChangeDependencies() {
   //   super.didChangeDependencies();
-  //   getPosts();
+  //   // getPosts();
   // }
 
   @override
@@ -67,14 +67,13 @@ class _PostsState extends State<Posts> {
                       Navigator.push(
                         context,
                         MaterialPageRoute<void>(
-                            builder: (context) => AddPost()),
-                      ).then((_) => {
-                            // getPosts()
-                            // setState(() {
-                            //   _postData.length;
-                            // })
-                            super.didChangeDependencies()
-                          });
+                            builder: (BuildContext context) => const AddPost()),
+                      ).then((_) async {
+                        _postData = [];
+                        await getPosts();
+                        print('postData');
+                        print(_postData.length);
+                      });
                     },
                     child: const Text(
                       'Have anything to share? ',
@@ -100,12 +99,34 @@ class _PostsState extends State<Posts> {
               //   ),
               // ),
 
+              // FutureBuilder<void>(
+              //     future: getPosts(),
+              //     builder: (context, AsyncSnapshot snapshot) {
+              //       if (snapshot.connectionState == ConnectionState.waiting) {
+              //         return Center(child: Text('Please wait its loading...'));
+              //       } else {
+              //         if (snapshot.hasError)
+              //           return Center(child: Text('Error: ${snapshot.error}'));
+              //         else
+              //           return Center(
+              //               child: Text(
+              //                   '${snapshot.data}')); // snapshot.data  :- get your object which is pass from your downloadData() function
+              //       }
+              //     }),
+
+              // FutureBuilder<void>(
+              //     future: getPosts(),
+              //     builder: (context, AsyncSnapshot snapshot) {
+              //       return
               ListView.builder(
                 shrinkWrap: true,
+                // key: UniqueKey(),
                 physics: NeverScrollableScrollPhysics(),
                 itemCount: _postData.length,
                 itemBuilder: (context, index) {
                   return Card(
+                    // key: UniqueKey(),
+
                     // color: const Color(0xFF00AC97),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15.0),
@@ -142,7 +163,7 @@ class _PostsState extends State<Posts> {
                                   ))
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 20,
                           ),
                           // Text(post.postContent.toString()),
@@ -161,22 +182,46 @@ class _PostsState extends State<Posts> {
                           Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: <Widget>[
-                                SizedBox(
-                                  width: 10,
-                                ),
+                                if (_currentUser.uid ==
+                                    _postData[index].userId) ...[
+                                  GestureDetector(
+                                      onTap: () {
+                                        AwesomeDialog(
+                                          context: context,
+                                          dialogType: DialogType.WARNING,
+                                          animType: AnimType.BOTTOMSLIDE,
+                                          title: 'Are you sure?',
+                                          desc:
+                                              'You are about to delete this post.',
+                                          btnCancelOnPress: () {},
+                                          btnOkOnPress: () async {
+                                            repository
+                                                .deletePost(_postData[index]);
+                                            _postData = [];
+                                            await getPosts();
+                                            print('postData');
+                                          },
+                                        ).show();
+                                      },
+                                      child: const Icon(AntDesign.delete,
+                                          color: Colors.red)),
+                                  const SizedBox(
+                                    width: 20,
+                                  ),
+                                ],
                                 GestureDetector(
                                     onTap: () {
-                                      // print();
-
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute<void>(
-                                            builder: (context) => PostDetail(
-                                                postId: _postData[index].postId
-                                                    as String)),
+                                            builder: (BuildContext context) =>
+                                                PostDetail(
+                                                    postId: _postData[index]
+                                                        .postId as String)),
                                       );
                                     },
-                                    child: Icon(Ionicons.chatbubble_outline)),
+                                    child: const Icon(
+                                        Ionicons.chatbubble_outline)),
                               ]),
                         ],
                       ),
@@ -184,6 +229,7 @@ class _PostsState extends State<Posts> {
                   );
                 },
               )
+              // })
             ],
           ),
         ),
@@ -198,11 +244,15 @@ class _PostsState extends State<Posts> {
         .orderBy('createdAt', descending: true)
         .get();
 
+    // _postData.clear();
+
     data.docs.forEach((QueryDocumentSnapshot<Map<String, dynamic>> doc) {
       final Post postdata = Post.fromSnapshot(doc);
       setState(() {
         _postData.add(postdata);
       });
     });
+
+    return _postData;
   }
 }

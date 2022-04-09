@@ -7,6 +7,7 @@ ThemeData light = ThemeData(
     brightness: Brightness.light,
     // primarySwatch: Colors.blue,
     primaryColor: Colors.black,
+    primaryColorLight: Colors.white,
     // accentColor: Colors.blue[600],
     // scaffoldBackgroundColor: Colors.white,
     scaffoldBackgroundColor: const Color(0xFFF8F8F8),
@@ -19,6 +20,7 @@ ThemeData dark = ThemeData(
     // brightness: Brightness.dark,
     // primarySwatch: Colors.blue,
     primaryColor: Colors.white,
+    primaryColorLight: Colors.black,
     scaffoldBackgroundColor: const Color.fromRGBO(43, 10, 69, 0.35),
     colorScheme: const ColorScheme.dark(),
     textTheme: const TextTheme(

@@ -53,7 +53,7 @@ class _PostDetailState extends State<PostDetail> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15.0),
               ),
-              margin: EdgeInsets.all(8.0),
+              margin: const EdgeInsets.all(8.0),
               elevation: 8,
               shadowColor: Colors.grey.withOpacity(0.15),
               child: Padding(
@@ -118,13 +118,13 @@ class _PostDetailState extends State<PostDetail> {
                 elevation: 18,
                 shadowColor: Colors.grey.withOpacity(0.15),
                 child: Padding(
-                    padding: EdgeInsets.all(14.0),
+                    padding: const EdgeInsets.all(14.0),
                     child: SizedBox(
                         width: double.infinity,
                         child: Column(
                           children: [
                             Padding(
-                              padding: EdgeInsets.all(8.0),
+                              padding: const EdgeInsets.all(8.0),
                               child: TextField(
                                 controller: _commentController,
                                 style: const TextStyle(
@@ -161,7 +161,7 @@ class _PostDetailState extends State<PostDetail> {
 
                                   _commentController.clear();
                                 },
-                                child: Text('Comment'))
+                                child: const Text('Comment'))
                           ],
                         )))),
             Card(
@@ -171,14 +171,14 @@ class _PostDetailState extends State<PostDetail> {
                 elevation: 18,
                 shadowColor: Colors.grey.withOpacity(0.15),
                 child: Padding(
-                    padding: EdgeInsets.all(14.0),
+                    padding: const EdgeInsets.all(14.0),
                     child: SizedBox(
                       width: double.infinity,
                       child: Card(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15.0),
                         ),
-                        margin: EdgeInsets.all(8.0),
+                        margin: const EdgeInsets.all(8.0),
                         // elevation: 8,
                         shadowColor: Colors.grey.withOpacity(0),
                         // child: Text('Hello')
@@ -190,9 +190,9 @@ class _PostDetailState extends State<PostDetail> {
             Expanded(
               child: ListView.builder(
                   shrinkWrap: true,
-                  physics: AlwaysScrollableScrollPhysics(),
+                  physics: const AlwaysScrollableScrollPhysics(),
                   itemCount: _commentData.length,
-                  itemBuilder: (context, index) {
+                  itemBuilder: (BuildContext context, int index) {
                     // return ;
                     return Card(
                         shape: RoundedRectangleBorder(
