@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -185,8 +186,22 @@ class _PostsState extends State<Posts> {
                                     _postData[index].userId) ...[
                                   GestureDetector(
                                       onTap: () {
-                                        const AlertDialog(
-                                            title: Text('Sample Alert Dialog'));
+                                        AwesomeDialog(
+                                          context: context,
+                                          dialogType: DialogType.WARNING,
+                                          animType: AnimType.BOTTOMSLIDE,
+                                          title: 'Are you sure?',
+                                          desc:
+                                              'You are about to delete this post.',
+                                          btnCancelOnPress: () {},
+                                          btnOkOnPress: () async {
+                                            repository
+                                                .deletePost(_postData[index]);
+                                            _postData = [];
+                                            await getPosts();
+                                            print('postData');
+                                          },
+                                        ).show();
                                       },
                                       child: const Icon(AntDesign.delete,
                                           color: Colors.red)),
