@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:kalpaniksaathi/models/posts.dart';
 import 'package:kalpaniksaathi/repository/data_repository.dart';
 import 'package:kalpaniksaathi/services/auth.dart';
+import 'package:uuid/uuid.dart';
 
 class AddPost extends StatefulWidget {
   const AddPost({Key? key}) : super(key: key);
@@ -69,23 +70,12 @@ class _AddPostState extends State<AddPost> {
                               borderRadius: BorderRadius.circular(14.0),
                             ))),
                         onPressed: () {
-                          final newPost = Post('post1',
+                          final newPost = Post(const Uuid().v4(),
                               userId: _currentUser.uid.toString(),
                               postContent: _postBodyController.text,
                               createdAt: DateTime.now().millisecondsSinceEpoch);
                           repository.addPost(newPost);
-
-                          // setState(() {
-                          //   _postBodyController.clear();
-                          //   didChangeDependencies();
-                          // });
-
-                          // onlick navigator pop
                           Navigator.pop(context);
-                          // Navigator.pushReplacement(
-                          //     context,
-                          //     MaterialPageRoute<void>(
-                          //         builder: (context) => Posts()));
                         },
                         child: const Text('Share',
                             style: TextStyle(
