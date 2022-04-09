@@ -29,7 +29,7 @@ class AuthService {
   Future signInAnon() async {
     try {
       final UserCredential result = await _auth.signInAnonymously();
-      User? user = result.user;
+      final User? user = result.user;
       return _userFromFirebaseUser(user!);
     } catch (e) {
       print(e.toString());
@@ -42,7 +42,7 @@ class AuthService {
     try {
       final UserCredential result = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
-      User? user = result.user;
+      final User? user = result.user;
       return _userFromFirebaseUser(user!);
     } catch (e) {
       print(e.toString());
@@ -55,7 +55,7 @@ class AuthService {
     try {
       final UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
-      User? user = result.user;
+      final User? user = result.user;
       return _userFromFirebaseUser(user!);
     } catch (e) {
       print(e.toString());
@@ -67,6 +67,16 @@ class AuthService {
   Future signOut() async {
     try {
       return await _auth.signOut();
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+  //delete user
+  Future deleteUser() async {
+    try {
+      return await _auth.currentUser?.delete();
     } catch (e) {
       print(e.toString());
       return null;
