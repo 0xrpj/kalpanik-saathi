@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kalpaniksaathi/models/user.dart';
+import 'package:kalpaniksaathi/pages/podcast/listen_page.dart';
 import 'package:kalpaniksaathi/pages/wrapper.dart';
 import 'package:kalpaniksaathi/services/auth.dart';
 import 'package:kalpaniksaathi/theme.dart';
@@ -18,6 +19,8 @@ void main() async {
   ]);
 
   runApp(MyApp());
+
+  WidgetsBinding.instance?.addObserver(const ListenPage());
 }
 
 class MyApp extends StatelessWidget {
