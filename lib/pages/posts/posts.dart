@@ -6,9 +6,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:kalpaniksaathi/models/posts.dart';
-import 'package:kalpaniksaathi/pages/posts/add_post.dart';
 import 'package:kalpaniksaathi/repository/data_repository.dart';
 import 'package:kalpaniksaathi/services/auth.dart';
+import 'package:uuid/uuid.dart';
 import 'package:velocity_x/src/extensions/context_ext.dart';
 
 import 'post_detail.dart';
@@ -24,6 +24,7 @@ class _PostsState extends State<Posts> {
   final DataRepository repository = DataRepository();
   final User _currentUser = AuthService().getUser();
   List<Post> _postData = [];
+  final TextEditingController _postBodyController = TextEditingController();
 
   @override
   void initState() {
@@ -42,38 +43,104 @@ class _PostsState extends State<Posts> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
+      padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
       child: SingleChildScrollView(
         child: ConstrainedBox(
           constraints: BoxConstraints(minHeight: context.screenHeight),
           child: Column(
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
-
               SizedBox(
                 height: 45.0,
                 child: ElevatedButton(
                     style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all<Color>(Color(0xFF00AC97)),
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                            const Color(0xFF00AC97)),
                         shape:
                             MaterialStateProperty.all<RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(14.0),
                         ))),
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute<void>(
-                            builder: (BuildContext context) => const AddPost()),
-                      ).then((_) async {
-                        _postData = [];
-                        await getPosts();
-                        print('postData');
-                        print(_postData.length);
-                      });
+                      AwesomeDialog(
+                        context: context,
+                        animType: AnimType.SCALE,
+                        dialogType: DialogType.NO_HEADER,
+                        body: Center(
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15.0),
+                            ),
+                            margin: EdgeInsets.all(8.0),
+                            elevation: 8,
+                            shadowColor: Colors.grey.withOpacity(0.15),
+                            child: Padding(
+                              padding: const EdgeInsets.all(14.0),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    children: const [
+                                      Text('Share with your heart\'s content!',
+                                          style: TextStyle(
+                                            fontFamily: 'PoppinsLight',
+                                            fontWeight: FontWeight.w900,
+                                            fontSize: 14.0,
+                                            letterSpacing: 0.3,
+                                          ))
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  TextField(
+                                      controller: _postBodyController,
+                                      style: const TextStyle(
+                                        height: 1.0,
+                                      ),
+                                      maxLines: null),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        title: 'This is Ignored',
+                        desc: 'This is also Ignored',
+                        btnOkOnPress: () async {
+                          if (_postBodyController.text.isEmpty) {
+                            return;
+                          }
+                          final newPost = Post(const Uuid().v4(),
+                              userId: _currentUser.uid.toString(),
+                              postContent: _postBodyController.text,
+                              createdAt: DateTime.now().millisecondsSinceEpoch);
+                          repository.addPost(newPost);
+                          _postBodyController.clear();
+
+                          _postData = [];
+                          await getPosts();
+                        },
+                        btnCancelOnPress: () {
+                          _postBodyController.clear();
+                        },
+                        btnOkText: 'Share your story',
+                        btnOkColor: const Color(0xFF00AC97),
+                        btnCancelText: 'I changed my mind',
+                        buttonsBorderRadius: BorderRadius.circular(10),
+                        customHeader: Container(
+                          width: 150,
+                          height: 150,
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.white,
+                            image: DecorationImage(
+                              fit: BoxFit.fill,
+                              image: AssetImage('assets/img/dog.jpg'),
+                            ),
+                          ),
+                        ),
+                      ).show();
                     },
                     child: const Text(
                       'Have anything to share? ',
@@ -85,39 +152,11 @@ class _PostsState extends State<Posts> {
                       ),
                     )),
               ),
-              SizedBox(height: 20),
-              // Padding(
-              //   padding: const EdgeInsets.all(8.0),
-              //   child: Row(
-              //     // crossAxisAlignment: CrossAxisAlignment.start,
-              //     children: const [
-              //       Text(
-              //         'Read what others are feeling...',
-              //         style: TextStyle(fontSize: 16),
-              //       ),
-              //     ],
-              //   ),
-              // ),
-
-              // FutureBuilder<void>(
-              //     future: getPosts(),
-              //     builder: (context, AsyncSnapshot snapshot) {
-              //       if (snapshot.connectionState == ConnectionState.waiting) {
-              //         return Center(child: Text('Please wait its loading...'));
-              //       } else {
-              //         if (snapshot.hasError)
-              //           return Center(child: Text('Error: ${snapshot.error}'));
-              //         else
-              //           return Center(
-              //               child: Text(
-              //                   '${snapshot.data}')); // snapshot.data  :- get your object which is pass from your downloadData() function
-              //       }
-              //     }),
-
-              // FutureBuilder<void>(
-              //     future: getPosts(),
-              //     builder: (context, AsyncSnapshot snapshot) {
-              //       return
+              const SizedBox(height: 20),
+              if (_postData.isEmpty)
+                const Center(
+                  child: CircularProgressIndicator(),
+                ),
               ListView.builder(
                 shrinkWrap: true,
                 // key: UniqueKey(),
@@ -186,25 +225,133 @@ class _PostsState extends State<Posts> {
                                     _postData[index].userId) ...[
                                   GestureDetector(
                                       onTap: () {
+                                        _postBodyController.text =
+                                            _postData[index]
+                                                .postContent
+                                                .toString();
+
                                         AwesomeDialog(
                                           context: context,
-                                          dialogType: DialogType.WARNING,
-                                          animType: AnimType.BOTTOMSLIDE,
-                                          title: 'Are you sure?',
-                                          desc:
-                                              'You are about to delete this post.',
-                                          btnCancelOnPress: () {},
+                                          animType: AnimType.SCALE,
+                                          dialogType: DialogType.NO_HEADER,
+                                          body: Center(
+                                            child: Card(
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(15.0),
+                                              ),
+                                              margin: EdgeInsets.all(8.0),
+                                              elevation: 8,
+                                              shadowColor:
+                                                  Colors.grey.withOpacity(0.15),
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(14.0),
+                                                child: Column(
+                                                  children: [
+                                                    Row(
+                                                      children: const [
+                                                        Text('Edit your story',
+                                                            style: TextStyle(
+                                                              fontFamily:
+                                                                  'PoppinsLight',
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w900,
+                                                              fontSize: 14.0,
+                                                              letterSpacing:
+                                                                  0.3,
+                                                            ))
+                                                      ],
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 20,
+                                                    ),
+                                                    TextField(
+                                                        controller:
+                                                            _postBodyController,
+                                                        style: const TextStyle(
+                                                          height: 1.0,
+                                                        ),
+                                                        maxLines: null),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          title: 'This is Ignored',
+                                          desc: 'This is also Ignored',
                                           btnOkOnPress: () async {
-                                            repository
-                                                .deletePost(_postData[index]);
+                                            if (_postBodyController
+                                                .text.isEmpty) {
+                                              return;
+                                            }
+                                            final newPost = Post(
+                                                _postData[index]
+                                                    .postId
+                                                    .toString(),
+                                                userId:
+                                                    _currentUser.uid.toString(),
+                                                postContent:
+                                                    _postBodyController.text,
+                                                createdAt: DateTime.now()
+                                                    .millisecondsSinceEpoch);
+                                            repository.updatePost(newPost);
+                                            _postBodyController.clear();
+
                                             _postData = [];
                                             await getPosts();
-                                            print('postData');
                                           },
+                                          btnCancelOnPress: () {
+                                            _postBodyController.clear();
+                                          },
+                                          btnOkText: 'Share your story',
+                                          btnOkColor: const Color(0xFF00AC97),
+                                          btnCancelText: 'I changed my mind',
+                                          buttonsBorderRadius:
+                                              BorderRadius.circular(10),
+                                          customHeader: Container(
+                                            width: 150,
+                                            height: 150,
+                                            decoration: const BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: Colors.white,
+                                              image: DecorationImage(
+                                                fit: BoxFit.fill,
+                                                image: AssetImage(
+                                                    'assets/img/dog.jpg'),
+                                              ),
+                                            ),
+                                          ),
                                         ).show();
                                       },
-                                      child: const Icon(AntDesign.delete,
-                                          color: Colors.red)),
+                                      child: const Icon(AntDesign.edit,
+                                          color: Colors.green)),
+                                  const SizedBox(
+                                    width: 20,
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      AwesomeDialog(
+                                        context: context,
+                                        dialogType: DialogType.WARNING,
+                                        animType: AnimType.BOTTOMSLIDE,
+                                        title: 'Are you sure?',
+                                        desc:
+                                            'You are about to delete this post.',
+                                        btnCancelOnPress: () {},
+                                        btnOkOnPress: () async {
+                                          repository
+                                              .deletePost(_postData[index]);
+                                          _postData = [];
+                                          await getPosts();
+                                          print('postData');
+                                        },
+                                      ).show();
+                                    },
+                                    child: const Icon(AntDesign.delete,
+                                        color: Colors.red),
+                                  ),
                                   const SizedBox(
                                     width: 20,
                                   ),
@@ -228,8 +375,10 @@ class _PostsState extends State<Posts> {
                     ),
                   );
                 },
-              )
-              // })
+              ),
+              const SizedBox(
+                height: 100,
+              ),
             ],
           ),
         ),

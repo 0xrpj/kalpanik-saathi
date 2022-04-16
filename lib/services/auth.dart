@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kalpaniksaathi/models/user.dart';
 
 class AuthService {
@@ -29,7 +30,7 @@ class AuthService {
   Future signInAnon() async {
     try {
       final UserCredential result = await _auth.signInAnonymously();
-      User? user = result.user;
+      final User? user = result.user;
       return _userFromFirebaseUser(user!);
     } catch (e) {
       print(e.toString());
@@ -42,7 +43,7 @@ class AuthService {
     try {
       final UserCredential result = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
-      User? user = result.user;
+      final User? user = result.user;
       return _userFromFirebaseUser(user!);
     } catch (e) {
       print(e.toString());
@@ -55,7 +56,7 @@ class AuthService {
     try {
       final UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
-      User? user = result.user;
+      final User? user = result.user;
       return _userFromFirebaseUser(user!);
     } catch (e) {
       print(e.toString());
@@ -72,4 +73,34 @@ class AuthService {
       return null;
     }
   }
+
+  //delete user
+  Future deleteUser() async {
+    try {
+      return await _auth.currentUser?.delete();
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+  //google sign in
+
+  // Future<UserCredential> signInWithGoogle() async {
+  //   // Trigger the authentication flow
+  //   final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+  //   // Obtain the auth details from the request
+  //   final GoogleSignInAuthentication? googleAuth =
+  //       await googleUser?.authentication;
+
+  //   // Create a new credential
+  //   final credential = GoogleAuthProvider.credential(
+  //     accessToken: googleAuth?.accessToken,
+  //     idToken: googleAuth?.idToken,
+  //   );
+
+  //   // Once signed in, return the UserCredential
+  //   return await FirebaseAuth.instance.signInWithCredential(credential);
+  // }
 }

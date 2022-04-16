@@ -5,9 +5,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:intl/intl.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-class ListenPage extends StatefulWidget {
+class ListenPage extends StatefulWidget with WidgetsBindingObserver {
   const ListenPage({Key? key}) : super(key: key);
 
   @override
@@ -20,6 +21,21 @@ class _ListenPageState extends State<ListenPage> {
   bool _isPlaying = false;
 
   final AudioPlayer _audioPlayer = AudioPlayer();
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _audioPlayer.resume();
+    } else {
+      _audioPlayer.pause();
+    }
+  }
+
+  @override
+  Future<void> dispose() async {
+    super.dispose();
+    await _audioPlayer.stop();
+  }
 
   @override
   void initState() {
@@ -67,6 +83,8 @@ class _ListenPageState extends State<ListenPage> {
 
   @override
   Widget build(BuildContext context) {
+    final DateTime now = DateTime.now();
+    final String formattedDate = DateFormat('  EEE d MMM').format(now);
     return Padding(
       padding: const EdgeInsets.only(top: 10, bottom: 80),
       child: Container(
@@ -78,6 +96,23 @@ class _ListenPageState extends State<ListenPage> {
         //         begin: Alignment.topLeft,
         //         end: Alignment.bottomRight))
         //     .make(),
+
+        Padding(
+          padding: const EdgeInsets.only(top: 25),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: const [
+              Text(
+                'Welcome to your space. \n        Get motivated.\n        Get stuff done.',
+                style: TextStyle(
+                    // color: Colors.yellow[900],
+                    fontFamily: 'PoppinsLight',
+                    fontSize: 30),
+              ),
+            ],
+          ),
+        ),
         VxSwiper.builder(
             itemCount: audios.length,
             aspectRatio: 1,
@@ -92,28 +127,43 @@ class _ListenPageState extends State<ListenPage> {
                   .withRounded(value: 60.0)
                   .make()
                   .onInkTap(() {
-                _playMusic(audios[index]['url'] as String);
+                if (_isPlaying) {
+                  _audioPlayer.pause();
+                } else {
+                  _audioPlayer.pause();
+
+                  _playMusic(audios[index]['url'] as String);
+                }
                 // });
               }).p16();
             }).centered(),
         Align(
           alignment: Alignment.bottomCenter,
           child: [
-            if (_isPlaying) 'Playing Now'.text.black.makeCentered(),
-            Icon(
-              _isPlaying
-                  ? CupertinoIcons.stop_circle
-                  : CupertinoIcons.play_circle,
-              color: Colors.black,
-              size: 50.0,
-            ).onInkTap(() {
-              if (_isPlaying) {
-                _audioPlayer.stop();
-              } else {
-                _playMusic(_selectedAudio);
-                // print(_selectedAudio);
-              }
-            })
+            Text(
+              formattedDate,
+              style: const TextStyle(
+                  // color: Colors.yellow[900],
+                  fontFamily: 'PoppinsMedium',
+                  fontSize: 22),
+            ),
+            const SizedBox(height: 18),
+            if (!_isPlaying)
+              const Text(
+                'Click on the tile to play',
+                style: TextStyle(
+                    // color: Colors.yellow[900],
+                    fontFamily: 'Schoolbell',
+                    fontSize: 22),
+              ),
+            if (_isPlaying)
+              const Text(
+                'Click on the tile to stop',
+                style: TextStyle(
+                    // color: Colors.yellow[900],
+                    fontFamily: 'Schoolbell',
+                    fontSize: 22),
+              ),
           ].vStack(),
         ).pOnly(bottom: context.percentHeight * 5)
       ])

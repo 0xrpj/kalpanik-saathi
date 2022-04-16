@@ -164,7 +164,7 @@ class _SignInState extends State<SignIn> {
                 const Padding(
                   padding: EdgeInsets.only(left: 5.0, right: 5.0),
                   child: Text(
-                    'I\'ll always listen to you.',
+                    'Kalpanik Saathi will listen to you.',
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 16.0,
@@ -192,44 +192,44 @@ class _SignInState extends State<SignIn> {
           // Row(
           //   mainAxisAlignment: MainAxisAlignment.center,
           //   children: <Widget>[
-          //     Padding(
-          //       padding: const EdgeInsets.only(top: 10.0, right: 40.0),
-          //       child: GestureDetector(
-          //         onTap: () => CustomSnackBar(
-          //             context, const Text('Facebook button pressed')),
-          //         child: Container(
-          //           padding: const EdgeInsets.all(15.0),
-          //           decoration: const BoxDecoration(
-          //             shape: BoxShape.circle,
-          //             color: Colors.white,
-          //           ),
-          //           child: const Icon(
-          //             FontAwesomeIcons.facebookF,
-          //             color: Color(0xFF0084ff),
-          //           ),
+          //   Padding(
+          //     padding: const EdgeInsets.only(top: 10.0, right: 40.0),
+          //     child: GestureDetector(
+          //       onTap: () => CustomSnackBar(
+          //           context, const Text('Facebook button pressed')),
+          //       child: Container(
+          //         padding: const EdgeInsets.all(15.0),
+          //         decoration: const BoxDecoration(
+          //           shape: BoxShape.circle,
+          //           color: Colors.white,
+          //         ),
+          //         child: const Icon(
+          //           FontAwesomeIcons.facebookF,
+          //           color: Color(0xFF0084ff),
           //         ),
           //       ),
           //     ),
-          //     Padding(
-          //       padding: const EdgeInsets.only(top: 10.0),
-          //       child: GestureDetector(
-          //         onTap: () => CustomSnackBar(
-          //             context, const Text('Google button pressed')),
-          //         child: Container(
-          //           padding: const EdgeInsets.all(15.0),
-          //           decoration: const BoxDecoration(
-          //             shape: BoxShape.circle,
-          //             color: Colors.white,
-          //           ),
-          //           child: const Icon(
-          //             FontAwesomeIcons.google,
-          //             color: Color(0xFF0084ff),
-          //           ),
-          //         ),
+          //   ),
+          // Padding(
+          //   padding: const EdgeInsets.only(top: 10.0),
+          //   child: GestureDetector(
+          //     onTap: () => CustomSnackBar(
+          //         context, const Text('Google button pressed')),
+          //     child: Container(
+          //       padding: const EdgeInsets.all(15.0),
+          //       decoration: const BoxDecoration(
+          //         shape: BoxShape.circle,
+          //         color: Colors.white,
+          //       ),
+          //       child: const Icon(
+          //         FontAwesomeIcons.google,
+          //         color: Color(0xFF0084ff),
           //       ),
           //     ),
-          //   ],
+          //   ),
           // ),
+          //     ],
+          //   ),
         ],
       ),
     );
