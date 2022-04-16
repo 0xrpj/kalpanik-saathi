@@ -15,8 +15,8 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final AuthService _auth = AuthService();
-  int _currentIndex = 0;
-  final tabs = [ChatPage(), Posts(), ListenPage()];
+  int _currentIndex = 1;
+  final tabs = [const ChatPage(), const Posts(), const ListenPage()];
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,7 @@ class _HomeState extends State<Home> {
             bottom: MediaQuery.of(context).viewInsets.bottom + 10,
 
             child: Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 borderRadius: BorderRadius.only(
                     topRight: Radius.circular(30),
                     topLeft: Radius.circular(30)),
@@ -45,7 +45,7 @@ class _HomeState extends State<Home> {
                 // ],
               ),
               child: ClipRRect(
-                borderRadius: BorderRadius.all(
+                borderRadius: const BorderRadius.all(
                   Radius.circular(20),
                   // ),
                 ),
@@ -86,20 +86,11 @@ class _HomeState extends State<Home> {
                           _currentIndex = index;
                           print(_currentIndex);
                         });
-                        // }));
                       }),
                 ),
               ),
             ),
           )
-        ])
-        // bottomNavigationBar: Theme(
-        //   data: ThemeData(
-        //     splashColor: Colors.transparent,
-        //     highlightColor: Colors.transparent,
-        //   ),
-        //   child:
-        // )
-        );
+        ]));
   }
 }
