@@ -147,60 +147,70 @@ class _PostDetailState extends State<PostDetail> {
                             ),
                             ElevatedButton(
                                 onPressed: () {
-                                  final Comment newComment = Comment(
-                                      postId: widget.postId,
-                                      userId: _currentUser.uid.toString(),
-                                      commentContent: _commentController.text,
-                                      createdAt: DateTime.now()
-                                          .millisecondsSinceEpoch);
-                                  repository.addComment(newComment);
+                                  if (_commentController.text.isNotEmpty) {
+                                    final Comment newComment = Comment(
+                                        postId: widget.postId,
+                                        userId: _currentUser.uid.toString(),
+                                        commentContent: _commentController.text,
+                                        createdAt: DateTime.now()
+                                            .millisecondsSinceEpoch);
+                                    repository.addComment(newComment);
 
-                                  setState(() {
-                                    _commentData.insert(0, newComment);
-                                  });
+                                    setState(() {
+                                      _commentData.insert(0, newComment);
+                                    });
+                                  }
 
                                   _commentController.clear();
                                 },
                                 child: const Text('Comment'))
                           ],
                         )))),
-            Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15.0),
-                ),
-                elevation: 18,
-                shadowColor: Colors.grey.withOpacity(0.15),
-                child: Padding(
-                    padding: const EdgeInsets.all(14.0),
-                    child: SizedBox(
-                      width: double.infinity,
-                      child: Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15.0),
+            // conditional rendering
+            if (_commentData.isNotEmpty)
+              Card(
+                  shadowColor: Colors.grey.withOpacity(0.15),
+                  child: Padding(
+                      padding: const EdgeInsets.all(14.0),
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: Card(
+                          margin: const EdgeInsets.all(8.0),
+                          shadowColor: Colors.grey.withOpacity(0),
+                          child: const Text(
+                            'Recent comments',
+                          ),
                         ),
-                        margin: const EdgeInsets.all(8.0),
-                        // elevation: 8,
-                        shadowColor: Colors.grey.withOpacity(0),
-                        // child: Text('Hello')
-                        child: const Text(
-                          'Comments',
+                      )))
+            else
+              Card(
+                  shadowColor: Colors.grey.withOpacity(0.15),
+                  child: Padding(
+                      padding: const EdgeInsets.all(14.0),
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: Card(
+                          margin: const EdgeInsets.all(8.0),
+                          shadowColor: Colors.grey.withOpacity(0),
+                          child: const Text(
+                            'No comments yet!',
+                          ),
                         ),
-                      ),
-                    ))),
+                      ))),
+
             Expanded(
               child: ListView.builder(
                   shrinkWrap: true,
                   physics: const AlwaysScrollableScrollPhysics(),
                   itemCount: _commentData.length,
                   itemBuilder: (BuildContext context, int index) {
-                    // return ;
                     return Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                        ),
+                        // shape: RoundedRectangleBorder(
+                        //   borderRadius: BorderRadius.circular(15.0),
+                        // ),
                         margin: const EdgeInsets.all(8.0),
-                        elevation: 8,
-                        shadowColor: Colors.grey.withOpacity(0.15),
+                        // elevation: 8,
+                        // shadowColor: Colors.grey.withOpacity(0.15),
                         child: Padding(
                           padding: const EdgeInsets.all(14.0),
                           child: Column(
