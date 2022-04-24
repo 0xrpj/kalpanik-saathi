@@ -108,7 +108,7 @@ class _ListenPageState extends State<ListenPage> {
                 style: TextStyle(
                     // color: Colors.yellow[900],
                     fontFamily: 'PoppinsLight',
-                    fontSize: 30),
+                    fontSize: 25),
               ),
             ],
           ),

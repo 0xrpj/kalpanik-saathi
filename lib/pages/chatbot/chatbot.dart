@@ -120,26 +120,53 @@ class _ChatPageState extends State<ChatPage> {
     final response =
         await http.post(Uri.parse(apiUri), body: json.encode(queryParameters));
 
-    final responseJson = json.decode(response.body)[0]['text'].toString();
+    if (response.body.toString().contains('[')) {
+      final responseBody = json.decode(response.body) as List;
 
-    final botReply = types.TextMessage(
-      author: _bot,
-      createdAt: DateTime.now().millisecondsSinceEpoch,
-      id: const Uuid().v4(),
-      text: responseJson,
-    );
+      for (int i = 0; i < responseBody.length; i++) {
+        final responseJson = json.decode(response.body)[i]['text'].toString();
 
-    _addMessage(botReply);
+        final botReply = types.TextMessage(
+          author: _bot,
+          createdAt: DateTime.now().millisecondsSinceEpoch,
+          id: const Uuid().v4(),
+          text: responseJson,
+        );
 
-    final messageBotDB = Messages(
-        author: 'Bot',
+        _addMessage(botReply);
+
+        final messageBotDB = Messages(
+            author: 'Bot',
+            createdAt: DateTime.now().millisecondsSinceEpoch,
+            id: auth.getUser().uid.toString(),
+            seen: 'false',
+            text: responseJson,
+            type: 'text');
+
+        repository.addMessage(messageBotDB);
+      }
+    } else {
+      final responseJson = json.decode(response.body)[0]['text'].toString();
+
+      final botReply = types.TextMessage(
+        author: _bot,
         createdAt: DateTime.now().millisecondsSinceEpoch,
-        id: auth.getUser().uid.toString(),
-        seen: 'false',
+        id: const Uuid().v4(),
         text: responseJson,
-        type: 'text');
+      );
 
-    repository.addMessage(messageBotDB);
+      _addMessage(botReply);
+
+      final messageBotDB = Messages(
+          author: 'Bot',
+          createdAt: DateTime.now().millisecondsSinceEpoch,
+          id: auth.getUser().uid.toString(),
+          seen: 'false',
+          text: responseJson,
+          type: 'text');
+
+      repository.addMessage(messageBotDB);
+    }
   }
 
   @override
@@ -152,10 +179,10 @@ class _ChatPageState extends State<ChatPage> {
         child: Padding(
           padding: const EdgeInsets.fromLTRB(0, 0, 0, 80),
           child: Chat(
-            showUserAvatars: true,
+            // showUserAvatars: true,
             theme: DefaultChatTheme(
-                secondaryColor: Colors.deepPurple.shade900,
-                primaryColor: Colors.deepPurple.shade900,
+                secondaryColor: Color(0xff5e2d7a),
+                primaryColor: Colors.deepPurple.shade800,
                 sentMessageBodyTextStyle: const TextStyle(
                   color: Colors.white,
                   fontSize: 14,
